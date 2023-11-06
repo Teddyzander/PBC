@@ -1,4 +1,5 @@
 #include "server.h"
+#include <bitset>
 
 // Constructor
 Server::Server(PirParams &pir_params) : pir_params_(pir_params)

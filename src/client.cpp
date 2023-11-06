@@ -1,4 +1,5 @@
 #include "client.h"
+#include <bitset>
 
 // Constructor
 Client::Client(PirParams &pir_params) : pir_params_(pir_params)

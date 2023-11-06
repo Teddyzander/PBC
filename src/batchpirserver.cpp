@@ -45,6 +45,7 @@ void BatchPIRServer::populate_raw_db()
     {
         rawdb_[i] = generate_random_entry();
     }
+    std::cout << "test" << std::endl;
 }
 
 std::unordered_map<std::string, uint64_t> BatchPIRServer::get_hash_map() const
