@@ -32,8 +32,7 @@ void BatchPIRServer::populate_raw_db()
     if (myFile.fail()) {
        std::cout << "File does not exist" << std::endl;
     }
-    json data = json::parse(myFile);
-    std::cout << data[0] << std::endl;
+    json data = json::parse(myFile)[0];
     auto db_entries = batchpir_params_->get_num_entries();
     auto entry_size = batchpir_params_->get_entry_size();
 
@@ -55,9 +54,11 @@ void BatchPIRServer::populate_raw_db()
     // Populate the rawdb vector with entries
     for (size_t i = 0; i < db_entries; ++i)
     {
-        rawdb_[i] = generate_random_entry();
+        std::string temp_str = to_string(data[to_string(i + 2)]);
+        std::vector<unsigned char> temp_vec;
+        temp_vec.insert(temp_vec.begin(), temp_str.begin()+1, temp_str.end()-1);
+        rawdb_[i] = temp_vec;
     }
-    std::cout << "test" << std::endl;
 }
 
 std::unordered_map<std::string, uint64_t> BatchPIRServer::get_hash_map() const
