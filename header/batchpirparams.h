@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <iomanip> 
 #include <cstdlib>
+#include <string>
 #include "database_constants.h"
 #include "../src/utils.h"
 using namespace seal;
@@ -12,6 +13,8 @@ class BatchPirParams {
 public:
     BatchPirParams(int batch_size ,size_t num_entries, size_t entry_size, EncryptionParameters seal_params);
 
+    std::string_view get_file_name();
+    int get_tree_height();
     int get_num_hash_funcs();
     int get_batch_size();
     double get_cuckoo_factor();
@@ -28,6 +31,8 @@ public:
     void print_params() const;
 
 private:
+    std::string_view file_name_ = "No File Selected";
+    int tree_height_ = 0;
     int num_hash_funcs_ = 0;
     int batch_size_= 0;
     double cuckoo_factor_= 0;

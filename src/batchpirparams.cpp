@@ -1,17 +1,28 @@
+#include <cmath>
 #include "batchpirparams.h"
 
 
 BatchPirParams::BatchPirParams(int batch_size, size_t num_entries, size_t entry_size, seal::EncryptionParameters seal_params)
-    : num_hash_funcs_(DatabaseConstants::NumHashFunctions),
+    : file_name_(DatabaseConstants::FileName),
+      tree_height_(DatabaseConstants::TreeHeight),
+      num_hash_funcs_(DatabaseConstants::NumHashFunctions),
       batch_size_(batch_size),
       cuckoo_factor_(DatabaseConstants::CuckooFactor),
-      num_entries_(num_entries),
+      num_entries_(pow(2, DatabaseConstants::TreeHeight+1) - 1),
       entry_size_(entry_size),
       max_attempts_(DatabaseConstants::MaxAttempts){
 
         seal_params_ = seal_params;
 
       }
+
+std::string_view BatchPirParams::get_file_name() {
+    return file_name_;
+}
+
+int BatchPirParams::get_tree_height() {
+    return tree_height_;
+}
 
 int BatchPirParams::get_num_hash_funcs() {
     return num_hash_funcs_;
@@ -82,6 +93,9 @@ void BatchPirParams::print_params() const {
 std::cout << "+---------------------------------------------------+" << std::endl;
 std::cout << "|                  Batch Parameters                 |" << std::endl;
 std::cout << "+---------------------------------------------------+" << std::endl;
+std::cout << std::left << std::setw(20) << "| file_name_: " << file_name_ << std::endl;
+std::cout << std::left << std::setw(20) << "| tree_height_: " << tree_height_ << std::endl;
+std::cout << std::left << std::setw(20) << "| number_of_nodes_: " << pow(2, tree_height_+1) - 1 << std::endl;
 std::cout << std::left << std::setw(20) << "| num_hash_funcs_: " << num_hash_funcs_ << std::endl;
 std::cout << std::left << std::setw(20) << "| batch_size_: " << batch_size_ << std::endl;
 std::cout << std::left << std::setw(20) << "| cuckoo_factor_: " << cuckoo_factor_ << std::endl;

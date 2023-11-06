@@ -1,4 +1,8 @@
 #include "header/batchpirserver.h"
+#include "header/read_json.hpp"
+#include <fstream>
+
+using json = nlohmann::json;
 
 BatchPIRServer::BatchPIRServer(BatchPirParams &batchpir_params)
 {
@@ -22,12 +26,20 @@ BatchPIRServer::BatchPIRServer(BatchPirParams &batchpir_params)
 
 void BatchPIRServer::populate_raw_db()
 {
+    std::string file_name{ batchpir_params_->get_file_name() };
+    int tree_height = batchpir_params_->get_tree_height();
+    std::ifstream myFile(file_name);
+    if (myFile.fail()) {
+       std::cout << "File does not exist" << std::endl;
+    }
+    json data = json::parse(myFile);
+    std::cout << data[0] << std::endl;
     auto db_entries = batchpir_params_->get_num_entries();
     auto entry_size = batchpir_params_->get_entry_size();
 
     // Resize the rawdb vector to the correct size
     rawdb_.resize(db_entries);
-
+    
     // Define a function to generate a random entry
     auto generate_random_entry = [entry_size]() -> std::vector<unsigned char>
     {

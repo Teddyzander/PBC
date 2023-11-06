@@ -1,4 +1,27 @@
 # ninja log v5
+<<<<<<< HEAD
+40	2200	7209520153401577	CMakeFiles/vectorized_batch_pir.dir/src/pirparams.cpp.obj	ba329da972b7360
+3132	3871	7209520164954351	C:/Users/edwar/OneDrive/Documents/Academia/RMIT/Research/Projects/vectorized_batch_pir/build/bin/vectorized_batch_pir.exe	4570cca6952d27f6
+15	2203	7209520153491609	CMakeFiles/vectorized_batch_pir.dir/src/batchpirparams.cpp.obj	59b7a7b626689707
+20	3131	7209520162794833	CMakeFiles/vectorized_batch_pir.dir/src/batchpirserver.cpp.obj	1972332c85cea03a
+5	14	0	clean	8c45b54705a541e8
+32	2332	7209520154750912	CMakeFiles/vectorized_batch_pir.dir/src/main.cpp.obj	b5e14fb581c26e08
+27	2258	7209520153996996	CMakeFiles/vectorized_batch_pir.dir/src/client.cpp.obj	8fe1e06776e8f957
+10	2443	7209520155901278	CMakeFiles/vectorized_batch_pir.dir/src/batchpirclient.cpp.obj	a745c026aa06ef9e
+46	2393	7209520155395935	CMakeFiles/vectorized_batch_pir.dir/src/server.cpp.obj	c8dff818be8fa985
+12	2403	7209521077763008	CMakeFiles/vectorized_batch_pir.dir/src/batchpirserver.cpp.obj	1972332c85cea03a
+2403	3213	7209521080861981	C:/Users/edwar/OneDrive/Documents/Academia/RMIT/Research/Projects/vectorized_batch_pir/build/bin/vectorized_batch_pir.exe	4570cca6952d27f6
+25	2269	7209529934546012	CMakeFiles/vectorized_batch_pir.dir/src/pirparams.cpp.obj	ba329da972b7360
+8	2273	7209529934575969	CMakeFiles/vectorized_batch_pir.dir/src/batchpirparams.cpp.obj	59b7a7b626689707
+16	2324	7209529935406036	CMakeFiles/vectorized_batch_pir.dir/src/client.cpp.obj	8fe1e06776e8f957
+32	2352	7209529935671480	CMakeFiles/vectorized_batch_pir.dir/src/server.cpp.obj	c8dff818be8fa985
+21	2373	7209529935811489	CMakeFiles/vectorized_batch_pir.dir/src/main.cpp.obj	b5e14fb581c26e08
+3	2460	7209529936766759	CMakeFiles/vectorized_batch_pir.dir/src/batchpirclient.cpp.obj	a745c026aa06ef9e
+12	3324	7209529945422377	CMakeFiles/vectorized_batch_pir.dir/src/batchpirserver.cpp.obj	1972332c85cea03a
+10	1469	7209530897684538	CMakeFiles/vectorized_batch_pir.dir/src/batchpirparams.cpp.obj	59b7a7b626689707
+15	2407	7209530907039136	CMakeFiles/vectorized_batch_pir.dir/src/batchpirserver.cpp.obj	1972332c85cea03a
+2407	3210	7209530909458822	C:/Users/edwar/OneDrive/Documents/Academia/RMIT/Research/Projects/vectorized_batch_pir/build/bin/vectorized_batch_pir.exe	4570cca6952d27f6
+=======
 33	1919	7205882759297105	CMakeFiles/vectorized_batch_pir.dir/src/pirparams.cpp.obj	ba329da972b7360
 7	2005	7205882760142327	CMakeFiles/vectorized_batch_pir.dir/src/batchpirparams.cpp.obj	59b7a7b626689707
 26	2198	7205882762049313	CMakeFiles/vectorized_batch_pir.dir/src/main.cpp.obj	b5e14fb581c26e08
@@ -26,3 +49,14 @@
 2194	3889	7207524121504394	C:/Users/edwar/OneDrive/Documents/Academia/RMIT/Research/Projects/vectorized_batch_pir/build/bin/vectorized_batch_pir.exe	4570cca6952d27f6
 2	1483	7209410068116424	CMakeFiles/vectorized_batch_pir.dir/src/main.cpp.obj	b5e14fb581c26e08
 1484	2822	7209410071503315	C:/Users/edwar/OneDrive/Documents/Academia/RMIT/Research/Projects/vectorized_batch_pir/build/bin/vectorized_batch_pir.exe	4570cca6952d27f6
+>>>>>>> f386e6c54a896f318002410122688ddf0d690c70
+20	2732	7209535798590726	CMakeFiles/vectorized_batch_pir.dir/src/batchpirparams.cpp.obj	59b7a7b626689707
+51	2772	7209535798650614	CMakeFiles/vectorized_batch_pir.dir/src/pirparams.cpp.obj	ba329da972b7360
+35	2857	7209535799766230	CMakeFiles/vectorized_batch_pir.dir/src/client.cpp.obj	8fe1e06776e8f957
+60	2871	7209535799876333	CMakeFiles/vectorized_batch_pir.dir/src/server.cpp.obj	c8dff818be8fa985
+44	2933	7209535800711946	CMakeFiles/vectorized_batch_pir.dir/src/main.cpp.obj	b5e14fb581c26e08
+13	3115	7209535802532715	CMakeFiles/vectorized_batch_pir.dir/src/batchpirclient.cpp.obj	a745c026aa06ef9e
+29	4052	7209535811943268	CMakeFiles/vectorized_batch_pir.dir/src/batchpirserver.cpp.obj	1972332c85cea03a
+4052	4863	7209535814419377	C:/Users/edwar/OneDrive/Documents/Academia/RMIT/Research/Projects/vectorized_batch_pir/build/bin/vectorized_batch_pir.exe	4570cca6952d27f6
+11	1397	7209536772394674	CMakeFiles/vectorized_batch_pir.dir/src/batchpirparams.cpp.obj	59b7a7b626689707
+1398	2074	7209536774115457	C:/Users/edwar/OneDrive/Documents/Academia/RMIT/Research/Projects/vectorized_batch_pir/build/bin/vectorized_batch_pir.exe	4570cca6952d27f6
