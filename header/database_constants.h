@@ -17,9 +17,9 @@ namespace DatabaseConstants {
     constexpr double FirstDimension = 32;
     constexpr uint64_t DefaultVal =  std::numeric_limits<uint64_t>::max();
     // name of file we are using to generate data base
-    constexpr std::string_view FileName = "C:\\Users\\edwar\\OneDrive\\Documents\\Academia\\RMIT\\Research\\Projects\\vectorized_batch_pir\\tree_data\\wholeTree_10.json";
+    constexpr std::string_view FileName = "C:\\Users\\edwar\\OneDrive\\Documents\\Academia\\RMIT\\Research\\Projects\\vectorized_batch_pir\\tree_data\\wholeTree_3.json";
     // get height of the tree
-    constexpr int TreeHeight = 10;
+    constexpr int TreeHeight = 3;
 
 }
 

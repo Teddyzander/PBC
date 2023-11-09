@@ -28,6 +28,7 @@ private:
     bool is_simple_hash_;
     bool is_client_keys_set_;
     std::unordered_map<std::string, uint64_t> map_; // map from key to bucket index
+    std::unordered_map<std::string, uint64_t> raw_map_; // map from node to bucket index
 
 
     void simeple_hash();

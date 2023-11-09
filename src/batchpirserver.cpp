@@ -26,7 +26,8 @@ BatchPIRServer::BatchPIRServer(BatchPirParams &batchpir_params)
         for (int j = 0; j < buckets_[i].size(); j++)
         {
             std::string str(buckets_[i][j].begin(), buckets_[i][j].end());
-            temp_data[to_string(j)] = str;
+            std::cout << raw_map_[to_string(i) + to_string(j)] << std::endl;
+            temp_data[to_string(raw_map_[to_string(i) + to_string(j)])] = str;
         }
         file << temp_data;
         file.close();
@@ -124,6 +125,7 @@ void BatchPIRServer::simeple_hash()
         {
             buckets_[b].push_back(rawdb_[i]);
             map_[to_string(i) + to_string(b)] = buckets_[b].size();
+            raw_map_[to_string(b) + to_string(buckets_[b].size() - 1)] = i + 2;
         }
     }
 
