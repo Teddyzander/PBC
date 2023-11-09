@@ -298,6 +298,11 @@ PirDB Server::convert_to_pir_db(int rawdb_index)
                 std::cerr << "Error: Out-of-bounds access at ciphertext_idx = " << plaintext_idx
                           << ", slot = " << slot << std::endl;
             }
+            if (plaintext_idx == 23 && j == 23 && slot == 20)
+            {
+                std::cout << "stop" << std::endl;
+            }
+            
             db[plaintext_idx][slot] = coeffs[j];
             plaintext_idx += plaintexts_per_chunk;
         }

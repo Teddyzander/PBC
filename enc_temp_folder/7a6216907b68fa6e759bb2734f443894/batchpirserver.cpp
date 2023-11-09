@@ -28,9 +28,13 @@ BatchPIRServer::BatchPIRServer(BatchPirParams &batchpir_params)
             std::string str(buckets_[i][j].begin(), buckets_[i][j].end());
             temp_data[to_string(j)] = str;
         }
+        std::cout << temp_data << std::endl;
         file << temp_data;
         file.close();
+
     }
+    auto test = buckets_;
+    std::cout << "TEST;";
 }
 
 void BatchPIRServer::populate_raw_db()
