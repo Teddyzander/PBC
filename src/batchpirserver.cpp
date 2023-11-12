@@ -19,6 +19,7 @@ BatchPIRServer::BatchPIRServer(BatchPirParams &batchpir_params)
     std::cout << "BatchPIRServer: Simple hash and balancing completed." << std::endl;
     std::filesystem::path cwd = std::filesystem::current_path();
     std::filesystem::create_directory("../../PBC_data");
+    int nonce_count = 0;
     for (int i = 0; i < buckets_.size(); i++) 
     {
         std::ofstream file("../../PBC_data/PBC" + to_string(i+1) + "_" + to_string(batchpir_params_->get_tree_height()) + ".json");
@@ -26,8 +27,13 @@ BatchPIRServer::BatchPIRServer(BatchPirParams &batchpir_params)
         for (int j = 0; j < buckets_[i].size(); j++)
         {
             std::string str(buckets_[i][j].begin(), buckets_[i][j].end());
-            std::cout << raw_map_[to_string(i) + to_string(j)] << std::endl;
-            temp_data[to_string(raw_map_[to_string(i) + to_string(j)])] = str;
+            std::string label = to_string(raw_map_[to_string(i) + to_string(j)]);
+            if (label == "0")
+            {
+                label = "nonce_" + to_string(nonce_count);
+                nonce_count++;
+            }
+            temp_data[label] = str;
         }
         file << temp_data;
         file.close();
