@@ -46,8 +46,10 @@ BatchPIRServer::BatchPIRServer(BatchPirParams &batchpir_params)
 
 void BatchPIRServer::populate_raw_db()
 {
-    std::string file_name{ batchpir_params_->get_file_name() };
+    std::string folder{ batchpir_params_->get_file_name() };
     int tree_height = batchpir_params_->get_tree_height();
+    int children_num = DatabaseConstants::children;
+    std::string file_name = folder + "WholeTree_" + to_string(tree_height) + "_" + to_string(children_num) + ".JSON";
     std::ifstream myFile(file_name);
     if (myFile.fail()) {
        std::cout << "File does not exist" << std::endl;

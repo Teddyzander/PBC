@@ -171,7 +171,7 @@ int batchpir_main(int argc, char* argv[])
     cout << "Generating Tree..." << endl;
     utils::create_tree_file(DatabaseConstants::TreeHeight, DatabaseConstants::children);
     cout << "Tree of size " << std::to_string(pow(DatabaseConstants::children, DatabaseConstants::TreeHeight)) <<
-        "(height: " << std::to_string(DatabaseConstants::TreeHeight) << ", children: " <<
+        " (height: " << std::to_string(DatabaseConstants::TreeHeight) << ", children: " <<
         std::to_string(DatabaseConstants::children) << ") generated." << endl;
 
     auto encryption_params = utils::create_encryption_parameters(selection);

@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <vector>
 #include <fstream>
+#include <random>
 #include "database_constants.h"
 #include "seal/seal.h"
 #include "read_json.hpp"
@@ -36,11 +37,18 @@ namespace utils {
         std::string folder{ DatabaseConstants::FileName };
         std::string file_name = folder + "WholeTree_" + to_string(h) + "_" + to_string(q) + ".JSON";
         ifstream f(file_name);
-        if (f.good() == false) {
+        if (f.good()) {
+            cout << "File found - using premade tree!" << endl;
+        }
+
+        else {
             nlohmann::json tree;
-            int num_nodes = pow(q, h);
+            long unsigned int num_nodes = pow(q, h);
             for (int i = 2; i <= num_nodes; i++) {
-                tree[to_string(i)] = (unsigned char) rand();
+                uint32_t entry = rand();
+                std::stringstream stream;
+                stream << std::hex << entry;
+                tree[to_string(i)] = stream.str();
             }
             ofstream o(file_name);
             o << tree << std::endl;

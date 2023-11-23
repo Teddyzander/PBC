@@ -19,9 +19,9 @@ namespace DatabaseConstants {
     // name of file we are using to generate data base
     constexpr std::string_view FileName = "C:\\Users\\edwar\\OneDrive\\Documents\\Academia\\RMIT\\Research\\Projects\\vectorized_batch_pir\\tree_data\\";
     // set height of the tree
-    constexpr int TreeHeight = 5;
+    constexpr int TreeHeight = 10;
     // set number of children per node
-    constexpr int children = 4;
+    constexpr int children = 5;
 
 }
 
