@@ -7,8 +7,10 @@
 #include <iostream>
 #include <cstdint>
 #include <vector>
+#include <fstream>
 #include "database_constants.h"
 #include "seal/seal.h"
+#include "read_json.hpp"
 
 
 typedef  std::vector<seal::Ciphertext> PIRQuery;
@@ -28,6 +30,21 @@ namespace utils {
     // Returns the next power of 2 for a given number
     inline size_t next_power_of_two(size_t n) {
         return pow(2, ceil(log2(n)));
+    }
+
+    inline void create_tree_file(int h, int q) {
+        std::string folder{ DatabaseConstants::FileName };
+        std::string file_name = folder + "WholeTree_" + to_string(h) + "_" + to_string(q) + ".JSON";
+        ifstream f(file_name);
+        if (f.good() == false) {
+            nlohmann::json tree;
+            int num_nodes = pow(q, h);
+            for (int i = 2; i <= num_nodes; i++) {
+                tree[to_string(i)] = (unsigned char) rand();
+            }
+            ofstream o(file_name);
+            o << tree << std::endl;
+        }
     }
 
     // returns next node needed

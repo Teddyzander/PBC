@@ -9,6 +9,8 @@
 #include "batchpirparams.h"
 #include "batchpirserver.h"
 #include "batchpirclient.h"
+#include "database_constants.h"
+#include "utils.h"
 
 using namespace std;
 using namespace chrono;
@@ -151,7 +153,7 @@ int batchpir_main(int argc, char* argv[])
     const int client_id = 0;
     //  batch size, number of entries, size of entry
     std::vector<std::array<size_t, 3>> input_choices;
-    input_choices.push_back({32, 1048576, 64});    
+    input_choices.push_back({DatabaseConstants::TreeHeight, 1048576, 32});    
 
     std::vector<std::chrono::milliseconds> init_times;
     std::vector<std::chrono::milliseconds> query_gen_times;
@@ -165,6 +167,12 @@ int batchpir_main(int argc, char* argv[])
     const auto& choice = input_choices[0];
 
     string selection = std::to_string(choice[0]) + "," + std::to_string(choice[1]) + "," + std::to_string(choice[2]);
+
+    cout << "Generating Tree..." << endl;
+    utils::create_tree_file(DatabaseConstants::TreeHeight, DatabaseConstants::children);
+    cout << "Tree of size " << std::to_string(pow(DatabaseConstants::children, DatabaseConstants::TreeHeight)) <<
+        "(height: " << std::to_string(DatabaseConstants::TreeHeight) << ", children: " <<
+        std::to_string(DatabaseConstants::children) << ") generated." << endl;
 
     auto encryption_params = utils::create_encryption_parameters(selection);
     BatchPirParams params(choice[0], choice[1], choice[2], encryption_params);
@@ -188,7 +196,6 @@ int batchpir_main(int argc, char* argv[])
     {
         entry_indices.push_back(rand() % choice[2]);
     }
-
     cout << "Main: Starting query generation for example..." << endl;
     start = chrono::high_resolution_clock::now();
     auto queries = batch_client.create_queries(entry_indices);
