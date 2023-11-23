@@ -38,6 +38,10 @@ BatchPIRServer::BatchPIRServer(BatchPirParams &batchpir_params)
         file << temp_data;
         file.close();
     }
+    size_t test = 1290474;
+    std::vector<uint64_t> test_nodes = utils::fetch_all_nodes(test);
+    size_t test2 = 3;
+    std::vector<uint64_t> test_leafs = utils::generate_leaf_indices(test2);
 }
 
 void BatchPIRServer::populate_raw_db()

@@ -30,6 +30,36 @@ namespace utils {
         return pow(2, ceil(log2(n)));
     }
 
+    // returns next node needed
+    inline size_t fetch_node(size_t n) {
+        return floor(n / 2);
+    }
+
+    // gets all nodes and leaf element number in tree
+    inline std::vector<uint64_t> fetch_all_nodes(size_t n) {
+        std::vector<uint64_t> nodes;
+        nodes.push_back(n);
+        while (n / 2 > 2) {
+            n = fetch_node(n);
+            nodes.push_back(n);
+        }
+        return nodes;
+    }
+
+    // gets vector containing leaf elements (so nodes where their depth is h)
+    inline std::vector<uint64_t> generate_leaf_indices(size_t h) {
+        int upper = pow(2, h+1);
+        int lower = pow(2, h);
+        std::vector<uint64_t> leafs;
+        for (int i = lower; i < upper; i++) {
+            leafs.push_back(i);
+        }
+        return leafs;
+    }
+
+
+
+
     // Generates a random number between 0 and max_value
     inline uint32_t generate_random_number(uint32_t max_value) {
         return rand() % (max_value + 1);
