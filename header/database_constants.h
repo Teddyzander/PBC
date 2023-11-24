@@ -16,12 +16,12 @@ namespace DatabaseConstants {
     constexpr double CuckooFactor = 1.5;
     constexpr double FirstDimension = 32;
     constexpr uint64_t DefaultVal =  std::numeric_limits<uint64_t>::max();
-    // name of file we are using to generate data base
+    // name of folderwhere trees are stored
     constexpr std::string_view FileName = "C:\\Users\\edwar\\OneDrive\\Documents\\Academia\\RMIT\\Research\\Projects\\vectorized_batch_pir\\tree_data\\";
     // set height of the tree
-    constexpr int TreeHeight = 10;
+    constexpr int TreeHeight = 3;
     // set number of children per node
-    constexpr int children = 5;
+    constexpr int children = 3;
 
 }
 

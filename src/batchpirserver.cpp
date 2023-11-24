@@ -22,7 +22,8 @@ BatchPIRServer::BatchPIRServer(BatchPirParams &batchpir_params)
     int nonce_count = 0;
     for (int i = 0; i < buckets_.size(); i++) 
     {
-        std::ofstream file("../../PBC_data/PBC" + to_string(i+1) + "_" + to_string(batchpir_params_->get_tree_height()) + ".json");
+        std::ofstream file("../../PBC_data/PBC" + to_string(i+1) + "_" + 
+            to_string(batchpir_params_->get_tree_height()) + "_" + to_string(DatabaseConstants::children) + ".json");
         json temp_data;
         for (int j = 0; j < buckets_[i].size(); j++)
         {
@@ -37,11 +38,7 @@ BatchPIRServer::BatchPIRServer(BatchPirParams &batchpir_params)
         }
         file << temp_data;
         file.close();
-    }
-    size_t test = 1290474;
-    std::vector<uint64_t> test_nodes = utils::fetch_all_nodes(test);
-    size_t test2 = 3;
-    std::vector<uint64_t> test_leafs = utils::generate_leaf_indices(test2);
+    };
 }
 
 void BatchPIRServer::populate_raw_db()
@@ -54,7 +51,7 @@ void BatchPIRServer::populate_raw_db()
     if (myFile.fail()) {
        std::cout << "File does not exist" << std::endl;
     }
-    json data = json::parse(myFile)[0];
+    json data = json::parse(myFile);
     auto db_entries = batchpir_params_->get_num_entries();
     auto entry_size = batchpir_params_->get_entry_size();
 
@@ -76,9 +73,7 @@ void BatchPIRServer::populate_raw_db()
     // Populate the rawdb vector with entries
     for (size_t i = 0; i < db_entries; ++i)
     {
-        std::string temp_str = to_string(data[to_string(i + 2)]);
-        std::vector<unsigned char> temp_vec;
-        temp_vec.insert(temp_vec.begin(), temp_str.begin()+1, temp_str.end()-1);
+        std::vector<unsigned char> temp_vec = data[to_string(i + 2)];
         rawdb_[i] = temp_vec;
     }
 }
@@ -132,11 +127,12 @@ void BatchPIRServer::simeple_hash()
 
     for (uint64_t i = 0; i < db_entries; i++)
     {
-        std::vector<size_t> candidates = utils::get_candidate_buckets(i, num_candidates, total_buckets);
+        std::vector<size_t> candidates = utils::get_candidate_buckets(i+2, num_candidates, total_buckets);
         for (auto b : candidates)
         {
             buckets_[b].push_back(rawdb_[i]);
-            map_[to_string(i) + to_string(b)] = buckets_[b].size();
+            map_[to_string(i+2) + to_string(b)] = buckets_[b].size();
+            std::string test = to_string(b) + to_string(buckets_[b].size() - 1);
             raw_map_[to_string(b) + to_string(buckets_[b].size() - 1)] = i + 2;
         }
     }

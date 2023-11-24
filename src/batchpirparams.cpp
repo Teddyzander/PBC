@@ -8,7 +8,7 @@ BatchPirParams::BatchPirParams(int batch_size, size_t num_entries, size_t entry_
       num_hash_funcs_(DatabaseConstants::NumHashFunctions),
       batch_size_(DatabaseConstants::TreeHeight),
       cuckoo_factor_(DatabaseConstants::CuckooFactor),
-      num_entries_(pow(2, DatabaseConstants::TreeHeight+1) - 1),
+      num_entries_(pow(DatabaseConstants::children, DatabaseConstants::TreeHeight) - 2),
       entry_size_(entry_size),
       max_attempts_(DatabaseConstants::MaxAttempts){
 

@@ -44,11 +44,30 @@ namespace utils {
         else {
             nlohmann::json tree;
             long unsigned int num_nodes = pow(q, h);
+            unsigned __int64 entry_size = 32;
+            auto generate_random_entry = [entry_size]() -> std::vector<unsigned char>
+                {
+                    std::vector<unsigned char> entry(entry_size);
+                    std::generate(entry.begin(), entry.end(), []()
+                        {
+                            return rand() % 0xFF;
+                            // return 1;
+                        });
+                    return entry;
+                };
+            static const char alphanum[] =
+                "0123456789"
+                "!@#$%^&*"
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                "abcdefghijklmnopqrstuvwxyz";
             for (int i = 2; i <= num_nodes; i++) {
-                uint32_t entry = rand();
-                std::stringstream stream;
-                stream << std::hex << entry;
-                tree[to_string(i)] = stream.str();
+                std::vector<unsigned char> temp_char(64);
+                for (unsigned int j = 0; j < 64; j++)
+                {
+                    temp_char[j] = (alphanum[rand() % sizeof(alphanum) - 1]);
+                }
+    
+                tree[to_string(i)] = temp_char;
             }
             ofstream o(file_name);
             o << tree << std::endl;
