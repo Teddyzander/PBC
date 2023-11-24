@@ -85,7 +85,7 @@ std::unordered_map<std::string, uint64_t> BatchPIRServer::get_hash_map() const
     {
         throw std::logic_error("Error: No map created yet");
     }
-    return map_;
+    return raw_map_;
 }
 
 std::size_t BatchPIRServer::get_max_bucket_size() const
@@ -133,7 +133,7 @@ void BatchPIRServer::simeple_hash()
             buckets_[b].push_back(rawdb_[i]);
             map_[to_string(i+2) + to_string(b)] = buckets_[b].size();
             std::string test = to_string(b) + to_string(buckets_[b].size() - 1);
-            raw_map_[to_string(b) + to_string(buckets_[b].size() - 1)] = i + 2;
+            raw_map_[to_string(b) + to_string(buckets_[b].size() - 1)] = i;
         }
     }
 

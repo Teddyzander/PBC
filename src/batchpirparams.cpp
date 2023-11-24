@@ -8,12 +8,15 @@ BatchPirParams::BatchPirParams(int batch_size, size_t num_entries, size_t entry_
       num_hash_funcs_(DatabaseConstants::NumHashFunctions),
       batch_size_(DatabaseConstants::TreeHeight),
       cuckoo_factor_(DatabaseConstants::CuckooFactor),
-      num_entries_(pow(DatabaseConstants::children, DatabaseConstants::TreeHeight) - 2),
       entry_size_(entry_size),
       max_attempts_(DatabaseConstants::MaxAttempts){
 
         seal_params_ = seal_params;
-
+        int num_nodes = 0;
+        for (int i = 1; i <= DatabaseConstants::TreeHeight; i++) {
+            num_nodes += pow(DatabaseConstants::children, i);
+        }
+        num_entries_ = num_nodes;
       }
 
 std::string_view BatchPirParams::get_file_name() {

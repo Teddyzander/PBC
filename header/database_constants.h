@@ -19,9 +19,11 @@ namespace DatabaseConstants {
     // name of folderwhere trees are stored
     constexpr std::string_view FileName = "C:\\Users\\edwar\\OneDrive\\Documents\\Academia\\RMIT\\Research\\Projects\\vectorized_batch_pir\\tree_data\\";
     // set height of the tree
-    constexpr int TreeHeight = 3;
+    constexpr int TreeHeight = 10;
     // set number of children per node
-    constexpr int children = 3;
+    constexpr int children = 2;
+    // number of batches to request
+    constexpr int num_batches = 100;
 
 }
 

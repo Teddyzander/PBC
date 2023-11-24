@@ -1,10 +1,15 @@
 #include "pirparams.h"
 using namespace seal;
 
-PirParams::PirParams(size_t num_entries, size_t entry_size, size_t db_count, seal::EncryptionParameters seal_params, size_t first_two_dimensions = 0) : num_entries_(num_entries),
+PirParams::PirParams(size_t num_entries, size_t entry_size, size_t db_count, seal::EncryptionParameters seal_params, size_t first_two_dimensions = 0) : 
                                                                                                                 entry_size_(entry_size),
                                                                                                                 db_count_(db_count)
 {
+    int num_nodes = 0;
+    for (int i = 1; i <= DatabaseConstants::TreeHeight; i++) {
+        num_nodes += pow(DatabaseConstants::children, i);
+    }
+    num_entries_ = num_nodes;
 
     seal_params_ = seal_params;
 

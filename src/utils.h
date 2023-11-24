@@ -43,7 +43,10 @@ namespace utils {
 
         else {
             nlohmann::json tree;
-            long unsigned int num_nodes = pow(q, h);
+            long unsigned int num_nodes = 0;
+            for (int i = 1; i <= h; i++) {
+                num_nodes += pow(q, i);
+            }
             unsigned __int64 entry_size = 32;
             auto generate_random_entry = [entry_size]() -> std::vector<unsigned char>
                 {
@@ -60,7 +63,7 @@ namespace utils {
                 "!@#$%^&*"
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 "abcdefghijklmnopqrstuvwxyz";
-            for (int i = 2; i <= num_nodes; i++) {
+            for (int i = 2; i <= num_nodes+1; i++) {
                 std::vector<unsigned char> temp_char(64);
                 for (unsigned int j = 0; j < 64; j++)
                 {
@@ -75,16 +78,16 @@ namespace utils {
     }
 
     // returns next node needed
-    inline size_t fetch_node(size_t n) {
-        return floor(n / 2);
+    inline size_t fetch_node(size_t n, size_t q) {
+        return floor(n / q);
     }
 
     // gets all nodes and leaf element number in tree
-    inline std::vector<uint64_t> fetch_all_nodes(size_t n) {
+    inline std::vector<uint64_t> fetch_all_nodes(size_t n, size_t q) {
         std::vector<uint64_t> nodes;
         nodes.push_back(n);
         while (n / 2 > 2) {
-            n = fetch_node(n);
+            n = fetch_node(n, q);
             nodes.push_back(n);
         }
         return nodes;
@@ -101,7 +104,22 @@ namespace utils {
         return leafs;
     }
 
-
+    inline std::vector<uint64_t> generate_batch(size_t h, size_t q) {
+        int upper = pow(q, h + 1);
+        int lower = pow(q, h);
+        std::random_device rd; // obtain a random number from hardware
+        std::mt19937 gen(rd()); // seed the generator
+        std::uniform_int_distribution<> distr(lower, upper-1);
+        std::vector<uint64_t> leafs;
+        int n = distr(gen);
+        leafs.push_back(n);
+        int i = 0;
+        while (n / q >= q) {
+            n = fetch_node(n, q);
+            leafs.push_back(n);
+        }
+        return leafs;
+    }
 
 
     // Generates a random number between 0 and max_value

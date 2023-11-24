@@ -191,101 +191,18 @@ int batchpir_main(int argc, char* argv[])
 
     batch_server.set_client_keys(client_id, batch_client.get_public_keys());
 
-    vector<uint64_t> entry_indices;
-    for (int i = 0; i < choice[0]; i++)
-    {
-        entry_indices.push_back(rand() % choice[2]);
-    }
+    vector<uint64_t> entry_indices = generate_batch(DatabaseConstants::TreeHeight, DatabaseConstants::children);
     cout << "Main: Starting query generation for example..." << endl;
     start = chrono::high_resolution_clock::now();
-    auto queries = batch_client.create_queries(entry_indices);
+    for (int i = 0; i < DatabaseConstants::num_batches; i++) {
+        auto queries = batch_client.create_queries(entry_indices);
+        auto hashed_query = batch_client.get_cuckoo_table();
+    }
     end = chrono::high_resolution_clock::now();
     auto duration_querygen = chrono::duration_cast<chrono::milliseconds>(end - start);
     query_gen_times.push_back(duration_querygen);
     cout << "Main: Query generation complete for example." << endl;
-
-    cout << "Main: Starting response generation for example..." << endl;
-    start = chrono::high_resolution_clock::now();
-    PIRResponseList responses = batch_server.generate_response(client_id, queries);
-    end = chrono::high_resolution_clock::now();
-    auto duration_respgen = chrono::duration_cast<chrono::milliseconds>(end - start);
-    resp_gen_times.push_back(duration_respgen);
-    cout << "Main: Response generation complete for example." << endl;
-
-    cout << "Main: Checking decoded entries for example..." << endl;
-    auto decode_responses = batch_client.decode_responses_chunks(responses);
-
-    communication_list.push_back(batch_client.get_serialized_commm_size());
-
-    auto cuckoo_table = batch_client.get_cuckoo_table();
     cout << endl;
-
-
-
- for (size_t iteration = 0; iteration < input_choices.size(); ++iteration)
-{
-    std::cout << "***************************************************" << std::endl;
-    std::cout << "             Starting example " << (iteration + 1) << "               " << std::endl;
-    std::cout << "***************************************************" << std::endl;
-
-    const auto& choice = input_choices[iteration];
-
-    string selection = std::to_string(choice[0]) + "," + std::to_string(choice[1]) + "," + std::to_string(choice[2]);
-
-    auto encryption_params = utils::create_encryption_parameters(selection);
-    BatchPirParams params(choice[0], choice[1], choice[2], encryption_params);
-    params.print_params();
-
-    auto start = chrono::high_resolution_clock::now();
-    BatchPIRServer batch_server(params);
-    auto end = chrono::high_resolution_clock::now();
-    auto duration_init = chrono::duration_cast<chrono::milliseconds>(end - start);
-    init_times.push_back(duration_init);
-
-    BatchPIRClient batch_client(params);
-
-    auto map = batch_server.get_hash_map();
-    batch_client.set_map(map);
-
-    batch_server.set_client_keys(client_id, batch_client.get_public_keys());
-
-    vector<uint64_t> entry_indices;
-    for (int i = 0; i < choice[0]; i++)
-    {
-        entry_indices.push_back(rand() % choice[2]);
-    }
-
-    cout << "Main: Starting query generation for example " << (iteration + 1) << "..." << endl;
-    start = chrono::high_resolution_clock::now();
-    auto queries = batch_client.create_queries(entry_indices);
-    end = chrono::high_resolution_clock::now();
-    auto duration_querygen = chrono::duration_cast<chrono::milliseconds>(end - start);
-    query_gen_times.push_back(duration_querygen);
-    cout << "Main: Query generation complete for example " << (iteration + 1) << "." << endl;
-
-    cout << "Main: Starting response generation for example " << (iteration + 1) << "..." << endl;
-    start = chrono::high_resolution_clock::now();
-    PIRResponseList responses = batch_server.generate_response(client_id, queries);
-    end = chrono::high_resolution_clock::now();
-    auto duration_respgen = chrono::duration_cast<chrono::milliseconds>(end - start);
-    resp_gen_times.push_back(duration_respgen);
-    cout << "Main: Response generation complete for example " << (iteration + 1) << "." << endl;
-
-    cout << "Main: Checking decoded entries for example " << (iteration + 1) << "..." << endl;
-    auto decode_responses = batch_client.decode_responses_chunks(responses);
-
-    communication_list.push_back(batch_client.get_serialized_commm_size());
-
-    auto cuckoo_table = batch_client.get_cuckoo_table();
-
-    if (batch_server.check_decoded_entries(decode_responses, cuckoo_table))
-    {
-        cout << "Main: All the entries matched for example " << (iteration + 1) << "!!" << endl;
-    }
-
-    cout << endl;
-}
-
 
     cout << "***********************" << endl;
     cout << "     Timings Report    " << endl;
@@ -299,8 +216,6 @@ int batchpir_main(int argc, char* argv[])
 
         cout << "Initialization time: " << init_times[i].count() << " milliseconds" << endl;
         cout << "Query generation time: " << query_gen_times[i].count() << " milliseconds" << endl;
-        cout << "Response generation time: " << resp_gen_times[i].count() << " milliseconds" << endl;
-        cout << "Total communication: " << communication_list[i] << " KB" << endl;
         cout << endl;
     }
 
