@@ -19,7 +19,7 @@ cmake -S . -B build
 cmake --build build
 ```
 
-Once the build process is complete, run the following command to execute the Vectorized Batch PIR:
+Once the build process is complete, parameters can be changed in database_constants.h. The following command to execute the Vectorized Batch PIR:
 
 ```
 ./build/bin/vectorized_batch_pir
@@ -27,11 +27,12 @@ Once the build process is complete, run the following command to execute the Vec
 
 This will run the Vectorized Batch PIR for the three input scenarios mentioned below:
 
-| Batch Size | Database Size | Entry Size |
-|------------|---------------|------------|
-| 32         | 1048576       | 32         |
-| 64         | 1048576       | 32         |
-| 256        | 1048576       | 32         |
+- tree depth = h
+- number of children = q
+- number of nodes = $\sum\limits_{i=1}^{h} q^i$
+- batch size = h
+- number of requests = n
+
 
 ## Expected Output
 
@@ -39,14 +40,10 @@ Upon processing the inputs, the terminal should display a similar output:
 
 ![Terminal Output](https://github.com/mhmughees/vectorized_batchpir/assets/6435443/5112f7e3-2087-4223-88f1-4abf2037357d)
 
-
-## FHE Parameter Selection
-
-The performance of the protocol heavily relies on the selection of fully homomorphic encryption (FHE) parameters. We have provided the best-performing parameters for the given example inputs. However, we encourage developers to select the parameters that yield the best performance for their specific applications. Please refer to [this section](https://github.com/mhmughees/vectorized_batchpir/blob/370780f0bd58a99f18dda60e6fb2cde5c2e815f4/src/utils.h#L108) for parameter selection details.
-
 ## Contributors
  - [Muhammad Haris Mughees(Lead)](https://mhmughees.github.io)
  - [Ling Ren](https://sites.google.com/view/renling)
+ - [Edward Small](https://www.linkedin.com/in/edward-small-4a6084a4/)
 
 *Acknowledgment: Sun I (is16@illinois.edu) for helping with testing the code*
 
