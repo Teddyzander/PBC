@@ -19,7 +19,7 @@ cmake -S . -B build
 cmake --build build
 ```
 
-Once the build process is complete, parameters can be changed in database_constants.h. The following command to execute the Vectorized Batch PIR:
+Once the build process is complete, parameters can be changed in database_constants.h. The only parameter that requires changing before testing is *FileName* - please change to the location you wish to save the tree JSON files. The following command to execute the Vectorized Batch PIR:
 
 ```
 ./build/bin/vectorized_batch_pir
@@ -27,18 +27,18 @@ Once the build process is complete, parameters can be changed in database_consta
 
 This will run the Vectorized Batch PIR for the three input scenarios mentioned below:
 
-- tree depth = h
-- number of children = q
-- number of nodes = $\sum\limits_{i=1}^{h} q^i$
-- batch size = h
-- number of requests = n
+- tree depth = h = 3
+- number of children = q = 2
+- number of nodes = $\sum\limits_{i=1}^{h} q^i$ = 14
+- batch size = h = 3
+- number of requests = n = 100
 
 
 ## Expected Output
 
 Upon processing the inputs, the terminal should display a similar output:
 
-![Terminal Output](https://github.com/mhmughees/vectorized_batchpir/assets/6435443/5112f7e3-2087-4223-88f1-4abf2037357d)
+![image](https://github.com/Teddyzander/PBC/assets/49641102/582cb2f9-5774-4806-b3b0-e5631ef469cd)
 
 ## Contributors
  - [Muhammad Haris Mughees(Lead)](https://mhmughees.github.io)
