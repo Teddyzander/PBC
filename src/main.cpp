@@ -153,7 +153,11 @@ int batchpir_main(int argc, char* argv[])
     const int client_id = 0;
     //  batch size, number of entries, size of entry
     std::vector<std::array<size_t, 3>> input_choices;
-    input_choices.push_back({DatabaseConstants::TreeHeight, 1048576, 64});    
+    size_t num_nodes = 0;
+    for (int i = 1; i <= DatabaseConstants::TreeHeight; i++) {
+        num_nodes += pow(DatabaseConstants::children, i);
+    }
+    input_choices.push_back({DatabaseConstants::TreeHeight, num_nodes, 64});
 
     std::vector<std::chrono::milliseconds> init_times;
     std::vector<std::chrono::milliseconds> query_gen_times;
@@ -170,7 +174,7 @@ int batchpir_main(int argc, char* argv[])
 
     cout << "Generating Tree..." << endl;
     utils::create_tree_file(DatabaseConstants::TreeHeight, DatabaseConstants::children);
-    cout << "Tree of size " << std::to_string(pow(DatabaseConstants::children, DatabaseConstants::TreeHeight)) <<
+    cout << "Number of Leaves: " << std::to_string(pow(DatabaseConstants::children, DatabaseConstants::TreeHeight)) <<
         " (height: " << std::to_string(DatabaseConstants::TreeHeight) << ", children: " <<
         std::to_string(DatabaseConstants::children) << ") generated." << endl;
 
@@ -192,11 +196,13 @@ int batchpir_main(int argc, char* argv[])
     batch_server.set_client_keys(client_id, batch_client.get_public_keys());
 
     vector<uint64_t> entry_indices = generate_batch(DatabaseConstants::TreeHeight, DatabaseConstants::children);
-    cout << "Main: Starting query generation for example..." << endl;
+    cout << "Main: Starting query generation and information retrieval for " + to_string(DatabaseConstants::num_batches) + " iterations..." << endl;
+    auto buckets = batch_server.get_buckets();
     start = chrono::high_resolution_clock::now();
     for (int i = 0; i < DatabaseConstants::num_batches; i++) {
         auto queries = batch_client.create_queries(entry_indices);
         auto hashed_query = batch_client.get_cuckoo_table();
+        auto request = return_request(buckets, hashed_query);
     }
     end = chrono::high_resolution_clock::now();
     auto duration_querygen = chrono::duration_cast<chrono::milliseconds>(end - start);
@@ -214,8 +220,8 @@ int batchpir_main(int argc, char* argv[])
         cout << "Number of Entries: " << input_choices[i][1] << ", ";
         cout << "Entry Size: " << input_choices[i][2] << endl;
 
-        cout << "Initialization time: " << init_times[i].count() << " milliseconds" << endl;
-        cout << "Query generation time: " << query_gen_times[i].count() << " milliseconds" << endl;
+        cout << "Database Initialization time: " << init_times[i].count() << " milliseconds" << endl;
+        cout << "Average Information Retrieval time: " << query_gen_times[i].count() / DatabaseConstants::num_batches << " milliseconds" << endl;
         cout << endl;
     }
 

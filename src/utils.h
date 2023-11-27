@@ -33,6 +33,16 @@ namespace utils {
         return pow(2, ceil(log2(n)));
     }
 
+    inline std::vector<std::vector<unsigned char>> return_request(std::vector<RawDB> buckets, std::vector<unsigned __int64> query) {
+        std::vector<std::vector<unsigned char>> request;
+
+        for (int i = 0; i < query.size(); i++)
+            if (query[i] < buckets[i].size()) {
+                 request.push_back(buckets[i][query[i]]);
+            }
+        return request;
+    }
+
     inline void create_tree_file(int h, int q) {
         std::string folder{ DatabaseConstants::FileName };
         std::string file_name = folder + "WholeTree_" + to_string(h) + "_" + to_string(q) + ".JSON";

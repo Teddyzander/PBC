@@ -14,6 +14,7 @@ public:
     std::unordered_map<std::string, uint64_t> get_hash_map() const;
     void set_client_keys(uint32_t client_id, std::pair<seal::GaloisKeys, seal::RelinKeys> keys);
     void get_client_keys();
+    vector<RawDB> get_buckets();
     PIRResponseList generate_response(uint32_t client_id, vector<PIRQuery> queries);
     bool check_decoded_entries(vector<std::vector<std::vector<unsigned char>>> entries_list, vector<uint64_t> cuckoo_table);
    

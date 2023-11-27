@@ -202,7 +202,7 @@ void BatchPIRClient::translate_cuckoo()
         if (cuckoo_table_[i] != batchpir_params_.get_default_value())
         {
             // convert from db index to bucket index
-            cuckoo_table_[i] = map_[to_string(i) + to_string(cuckoo_table_[i])];
+            cuckoo_table_[i] = map_[to_string(cuckoo_table_[i]) + to_string(i)];
         }
     }
 }

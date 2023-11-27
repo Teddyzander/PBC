@@ -98,11 +98,11 @@ std::cout << "|                  Batch Parameters                 |" << std::end
 std::cout << "+---------------------------------------------------+" << std::endl;
 std::cout << std::left << std::setw(20) << "| file_name_: " << file_name_ << std::endl;
 std::cout << std::left << std::setw(20) << "| tree_height_: " << tree_height_ << std::endl;
-std::cout << std::left << std::setw(20) << "| number_of_nodes_: " << pow(2, tree_height_+1) - 1 << std::endl;
+std::cout << std::left << std::setw(20) << "| number_of_children: " << DatabaseConstants::children << std::endl;
+std::cout << std::left << std::setw(20) << "| number_of_nodes_: " << num_entries_ << std::endl;
 std::cout << std::left << std::setw(20) << "| num_hash_funcs_: " << num_hash_funcs_ << std::endl;
 std::cout << std::left << std::setw(20) << "| batch_size_: " << batch_size_ << std::endl;
 std::cout << std::left << std::setw(20) << "| cuckoo_factor_: " << cuckoo_factor_ << std::endl;
-std::cout << std::left << std::setw(20) << "| num_entries_: " << num_entries_ << std::endl;
 std::cout << std::left << std::setw(20) << "| max_attempts_: " << max_attempts_ << std::endl;
 std::cout << "+---------------------------------------------------+" << std::endl;
 }
