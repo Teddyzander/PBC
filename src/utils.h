@@ -114,9 +114,7 @@ namespace utils {
         return leafs;
     }
 
-    inline std::vector<uint64_t> generate_batch(size_t h, size_t q) {
-        int upper = pow(q, h + 1);
-        int lower = pow(q, h);
+    inline std::vector<uint64_t> generate_batch(size_t h, size_t q, int upper, int lower) {
         std::random_device rd; // obtain a random number from hardware
         std::mt19937 gen(rd()); // seed the generator
         std::uniform_int_distribution<> distr(lower, upper-1);

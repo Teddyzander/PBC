@@ -174,7 +174,7 @@ int batchpir_main(int argc, char* argv[])
 
     cout << "Generating Tree..." << endl;
     utils::create_tree_file(DatabaseConstants::TreeHeight, DatabaseConstants::children);
-    cout << "Number of Leaves: " << std::to_string(pow(DatabaseConstants::children, DatabaseConstants::TreeHeight)) <<
+    cout << "Number of Leaves: " << std::to_string(int(pow(DatabaseConstants::children, DatabaseConstants::TreeHeight))) <<
         " (height: " << std::to_string(DatabaseConstants::TreeHeight) << ", children: " <<
         std::to_string(DatabaseConstants::children) << ") generated." << endl;
 
@@ -195,11 +195,22 @@ int batchpir_main(int argc, char* argv[])
 
     batch_server.set_client_keys(client_id, batch_client.get_public_keys());
 
-    vector<uint64_t> entry_indices = generate_batch(DatabaseConstants::TreeHeight, DatabaseConstants::children);
+    long unsigned int upper = 0;
+    long unsigned int lower = 0;
+    for (int i = 0; i <= DatabaseConstants::TreeHeight; i++) {
+        int nodes = pow(DatabaseConstants::children, i);
+        upper += nodes;
+        if (i != DatabaseConstants::TreeHeight) {
+            lower += nodes;
+        }
+    }
+    upper = upper;
+    lower = lower + 1;
     cout << "Main: Starting query generation and information retrieval for " + to_string(DatabaseConstants::num_batches) + " iterations..." << endl;
     auto buckets = batch_server.get_buckets();
     start = chrono::high_resolution_clock::now();
     for (int i = 0; i < DatabaseConstants::num_batches; i++) {
+        vector<uint64_t> entry_indices = generate_batch(DatabaseConstants::TreeHeight, DatabaseConstants::children, upper, lower);
         auto queries = batch_client.create_queries(entry_indices);
         auto hashed_query = batch_client.get_cuckoo_table();
         auto request = return_request(buckets, hashed_query);

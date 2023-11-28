@@ -23,7 +23,7 @@ namespace DatabaseConstants {
     // set number of children per node
     constexpr int children = 2;
     // number of batches to request
-    constexpr int num_batches = 10000;
+    constexpr int num_batches = 100;
 
 }
 
