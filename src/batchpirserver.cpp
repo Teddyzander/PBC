@@ -28,10 +28,10 @@ BatchPIRServer::BatchPIRServer(BatchPirParams &batchpir_params)
         for (int j = 0; j < buckets_[i].size(); j++)
         {
             std::string str(buckets_[i][j].begin(), buckets_[i][j].end());
-            std::string label = to_string(raw_map_[to_string(i) + to_string(j)]);
-            if (label == "0")
+            std::string label = to_string(raw_map_[to_string(i) + to_string(j)]+2);
+            if (label == "2" && j != 0)
             {
-                label = "nonce_" + to_string(nonce_count);
+                label = to_string(rawdb_.size() + 2 + nonce_count);
                 nonce_count++;
             }
             temp_data[label] = str;
@@ -77,8 +77,10 @@ void BatchPIRServer::populate_raw_db()
     // Populate the rawdb vector with entries
     for (size_t i = 0; i < db_entries; ++i)
     {
-        std::vector<unsigned char> temp_vec = data[to_string(i + 2)];
-        rawdb_[i] = temp_vec;
+        std::string temp_string = data[to_string(i + 2)];
+        std::vector<unsigned char> temp_char;
+        temp_char.insert(temp_char.begin(), temp_string.begin(), temp_string.end());
+        rawdb_[i] = temp_char;
     }
 }
 
@@ -181,10 +183,11 @@ void BatchPIRServer::balance_buckets()
     auto num_buckets = buckets_.size();
     auto entry_size = batchpir_params_->get_entry_size();
 
-    auto generate_one_entry = [entry_size]() -> std::vector<unsigned char>
-    {
-        return std::vector<unsigned char>(entry_size, 1);
-    };
+    std::vector<unsigned char> entry;
+    unsigned char element = '0';
+    for (int i = 0; i < 64; i++) {
+        entry.push_back(element);
+    }
 
     for (int i = 0; i < num_buckets; i++)
     {
@@ -192,7 +195,7 @@ void BatchPIRServer::balance_buckets()
         for (int j = 0; j < size; j++)
         {
 
-            buckets_[i].push_back(generate_one_entry());
+            buckets_[i].push_back(entry);
         }
     }
 

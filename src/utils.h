@@ -57,30 +57,16 @@ namespace utils {
             for (int i = 1; i <= h; i++) {
                 num_nodes += pow(q, i);
             }
-            unsigned __int64 entry_size = 32;
-            auto generate_random_entry = [entry_size]() -> std::vector<unsigned char>
-                {
-                    std::vector<unsigned char> entry(entry_size);
-                    std::generate(entry.begin(), entry.end(), []()
-                        {
-                            return rand() % 0xFF;
-                            // return 1;
-                        });
-                    return entry;
-                };
-            static const char alphanum[] =
-                "0123456789"
-                "!@#$%^&*"
-                "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                "abcdefghijklmnopqrstuvwxyz";
+            unsigned __int64 entry_length = 64;
+            static const char hex_characters[] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
             for (int i = 2; i <= num_nodes+1; i++) {
-                std::vector<unsigned char> temp_char(64);
+                string str = "";
                 for (unsigned int j = 0; j < 64; j++)
                 {
-                    temp_char[j] = (alphanum[rand() % sizeof(alphanum) - 1]);
+                    str = str + hex_characters[rand() % 16];
                 }
     
-                tree[to_string(i)] = temp_char;
+                tree[to_string(i)] = str;
             }
             ofstream o(file_name);
             o << tree << std::endl;

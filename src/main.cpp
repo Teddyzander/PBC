@@ -213,7 +213,7 @@ int batchpir_main(int argc, char* argv[])
         vector<uint64_t> entry_indices = generate_batch(DatabaseConstants::TreeHeight, DatabaseConstants::children, upper, lower);
         auto queries = batch_client.create_queries(entry_indices);
         auto hashed_query = batch_client.get_cuckoo_table();
-        auto request = return_request(buckets, hashed_query);
+        // auto request = return_request(buckets, hashed_query);
     }
     end = chrono::high_resolution_clock::now();
     auto duration_querygen = chrono::duration_cast<chrono::milliseconds>(end - start);
@@ -232,7 +232,7 @@ int batchpir_main(int argc, char* argv[])
         cout << "Entry Size: " << input_choices[i][2] << endl;
 
         cout << "Database Initialization time: " << init_times[i].count() << " milliseconds" << endl;
-        cout << "Average Information Retrieval time: " << query_gen_times[i].count() / DatabaseConstants::num_batches << " milliseconds" << endl;
+        cout << "Average Indexing time: " << query_gen_times[i].count() / DatabaseConstants::num_batches << " milliseconds" << endl;
         cout << endl;
     }
 
