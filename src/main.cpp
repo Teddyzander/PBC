@@ -11,6 +11,7 @@
 #include "batchpirclient.h"
 #include "database_constants.h"
 #include "utils.h"
+#include "timer.h"
 
 using namespace std;
 using namespace chrono;
@@ -209,12 +210,15 @@ int batchpir_main(int argc, char* argv[])
     cout << "Main: Starting query generation and information retrieval for " + to_string(DatabaseConstants::num_batches) + " iterations..." << endl;
     auto buckets = batch_server.get_buckets();
     start = chrono::high_resolution_clock::now();
+    const std::string index_timer = "Index Timer";
+    GlobalTimer::set(index_timer);
     for (int i = 0; i < DatabaseConstants::num_batches; i++) {
         vector<uint64_t> entry_indices = generate_batch(DatabaseConstants::TreeHeight, DatabaseConstants::children, upper, lower);
         auto queries = batch_client.create_queries(entry_indices);
         auto hashed_query = batch_client.get_cuckoo_table();
         // auto request = return_request(buckets, hashed_query);
     }
+    GlobalTimer::stop(index_timer);
     end = chrono::high_resolution_clock::now();
     auto duration_querygen = chrono::duration_cast<chrono::milliseconds>(end - start);
     query_gen_times.push_back(duration_querygen);

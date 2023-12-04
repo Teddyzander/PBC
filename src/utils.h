@@ -52,7 +52,7 @@ namespace utils {
         }
 
         else {
-            nlohmann::json tree;
+            nlohmann::ordered_json tree;
             long unsigned int num_nodes = 0;
             for (int i = 1; i <= h; i++) {
                 num_nodes += pow(q, i);

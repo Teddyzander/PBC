@@ -17,7 +17,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.h")
 
 # Create executable target and add source files
-add_executable(vectorized_batch_pir ${SOURCES})
+add_executable(vectorized_batch_pir ${SOURCES} "header/timer.h")
 
 # Add the executable target
 # add_executable(vectorized_batch_pir main.cpp client.cpp server.cpp pirparams.cpp utils.h batchpirparams.cpp batchpirserver.cpp batchpirclient.cpp)

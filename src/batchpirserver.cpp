@@ -3,7 +3,7 @@
 #include <fstream>
 #include <filesystem>
 
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 
 BatchPIRServer::BatchPIRServer(BatchPirParams &batchpir_params)
 {
