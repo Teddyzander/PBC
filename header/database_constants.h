@@ -17,13 +17,13 @@ namespace DatabaseConstants {
     constexpr double FirstDimension = 32;
     constexpr uint64_t DefaultVal =  std::numeric_limits<uint64_t>::max();
     // name of folderwhere trees are stored
-    constexpr std::string_view FileName = "C:\\Users\\edwar\\OneDrive\\Documents\\Academia\\RMIT\\Research\\Projects\\vectorized_batch_pir\\tree_data\\";
+    constexpr std::string_view FileName = "..\\..\\tree_data\\";
     // set height of the tree
     constexpr unsigned int TreeHeight = 3;
     // set number of children per node
     constexpr unsigned int children = 2;
     // number of batches to request
-    constexpr unsigned int num_batches = 10;
+    constexpr unsigned int num_batches = 10000;
 
 }
 

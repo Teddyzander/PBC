@@ -63,10 +63,16 @@ int batchpir_main_client(int argc, char* argv[])
     lower = lower + 1;
     cout << "Main: Starting query generation and information retrieval for " + to_string(DatabaseConstants::num_batches) + " iterations..." << endl;
     auto start = chrono::high_resolution_clock::now();
+    int fails = 0;
     for (int i = 0; i < DatabaseConstants::num_batches; i++) {
-        vector<uint64_t> entry_indices = generate_batch(DatabaseConstants::TreeHeight, DatabaseConstants::children, upper, lower);
-        auto queries = batch_client.create_queries(entry_indices);
-        auto hashed_query = batch_client.get_cuckoo_table();
+        try {
+            vector<uint64_t> entry_indices = generate_batch(DatabaseConstants::TreeHeight, DatabaseConstants::children, upper, lower);
+            auto queries = batch_client.create_queries(entry_indices);
+            auto hashed_query = batch_client.get_cuckoo_table();
+        }
+        catch (std::invalid_argument const&) {
+            fails++;
+        }
         // auto request = return_request(buckets, hashed_query);
     }
     auto end = chrono::high_resolution_clock::now();
@@ -85,6 +91,7 @@ int batchpir_main_client(int argc, char* argv[])
         cout << "Number of Entries: " << input_choices[i][1] << ", ";
         cout << "Entry Size: " << input_choices[i][2] << endl;
         cout << "Average Indexing time: " << query_gen_times[i].count() / DatabaseConstants::num_batches << " milliseconds" << endl;
+        cout << "Rate of failure: " << fails / DatabaseConstants::num_batches << " %" << endl;
     }
 
     return 0;
