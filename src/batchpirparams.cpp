@@ -106,3 +106,14 @@ std::cout << std::left << std::setw(20) << "| cuckoo_factor_: " << cuckoo_factor
 std::cout << std::left << std::setw(20) << "| max_attempts_: " << max_attempts_ << std::endl;
 std::cout << "+---------------------------------------------------+" << std::endl;
 }
+
+void BatchPirParams::save_params() {
+    std::filesystem::create_directory("../../params");
+    std::string file_name = "../../params/params_" + to_string(DatabaseConstants::TreeHeight) +
+        "_" + to_string(DatabaseConstants::children) + ".txt";
+    ofstream file_obj;
+    file_obj.open(file_name, ios::in);
+    auto temp = this;
+    file_obj.write((char*)&temp, sizeof(temp));
+    file_obj.close();
+}

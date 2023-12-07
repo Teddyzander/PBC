@@ -52,14 +52,16 @@ int batchpir_main_server(int argc, char* argv[])
 
     auto encryption_params = utils::create_encryption_parameters(selection);
     BatchPirParams params(choice[0], choice[1], choice[2], encryption_params);
-    params.print_params();
 
     BatchPIRServer batch_server(params);
     database_times.push_back(batch_server.timer);
 
+    params.save_params();
+    
     auto hash_map = batch_server.get_hash_map();
+    size_t max_bucket_size = params.get_max_bucket_size();
+    utils::save_bucket_size(max_bucket_size);
     utils::save_map(hash_map);
-    // auto hash_map = utils::load_map();
     unsigned long cap = sizeof(hash_map);
     cout << "Calculating Map Size..." << endl;
     for (std::unordered_map<std::string, uint64_t>::const_iterator it = hash_map.begin(); it != hash_map.end(); ++it) {
@@ -88,9 +90,10 @@ int batchpir_main_server(int argc, char* argv[])
     return 0;
 }
 
+/*
 int main(int argc, char* argv[])
 {
     //vectorized_pir_main(argc, argv);
     batchpir_main_server(argc, argv);
     return 0;
-}
+}*/

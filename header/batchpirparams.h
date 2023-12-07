@@ -29,6 +29,8 @@ public:
     void set_max_bucket_size(size_t max_bucket_size);
 
     void print_params() const;
+    void save_params();
+    BatchPirParams* load_params();
 
 private:
     std::string_view file_name_ = "No File Selected";

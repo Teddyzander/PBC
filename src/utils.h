@@ -9,9 +9,11 @@
 #include <vector>
 #include <fstream>
 #include <random>
+#include <string>
 #include "database_constants.h"
 #include "seal/seal.h"
 #include "read_json.hpp"
+#include "batchpirparams.h"
 
 
 typedef  std::vector<seal::Ciphertext> PIRQuery;
@@ -27,6 +29,24 @@ using __uint128_t = _Unsigned128;
 using uint128_t = _Unsigned128;
 
 namespace utils {
+
+    inline void save_bucket_size(size_t bucket_size) {
+        std::filesystem::create_directory("../../params");
+        std::string file_name = "../../params/max_bucket_" + to_string(DatabaseConstants::TreeHeight) +
+            "_" + to_string(DatabaseConstants::children) + ".txt";
+        ifstream f(file_name);
+        ofstream o(file_name);
+        o << bucket_size << std::endl;
+    }
+
+    inline size_t load_bucket_size() {
+        std::string file_name = "../../params/max_bucket_" + to_string(DatabaseConstants::TreeHeight) +
+            "_" + to_string(DatabaseConstants::children) + ".txt";
+        std::fstream fin(file_name, fstream::in);
+        size_t ch;
+        fin >> ch;
+        return ch;
+    }
 
     inline void save_map(std::unordered_map<std::string, uint64_t> map) {
         std::filesystem::create_directory("../../maps");
