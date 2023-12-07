@@ -115,7 +115,7 @@ namespace utils {
 
     // returns next node needed
     inline size_t fetch_node(size_t n, size_t q) {
-        return floor(n / q);
+        return ceil(((float)n - 1) / (float)q);
     }
 
     // gets all nodes and leaf element number in tree
@@ -148,7 +148,7 @@ namespace utils {
         int n = distr(gen);
         leafs.push_back(n);
         int i = 0;
-        while (n > q + 1) {
+        while (((float)n - 1) / q  > 1) {
             n = fetch_node(n, q);
             leafs.push_back(n);
         }
