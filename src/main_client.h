@@ -15,9 +15,11 @@
 using namespace std;
 using namespace chrono;
 
-int batchpir_main_client(int argc, char* argv[])
+int batchpir_main_client(int argc, const char* argv[])
 {
-    unsigned int tree_height = unsigned int(argv[2]);
+    unsigned int tree_height = stoi(argv[2]);
+    unsigned int children = stoi(argv[3]);
+    unsigned int num_batches = stoi(argv[4]);
     const int client_id = 0;
     //  batch size, number of entries, size of entry
     std::vector<std::array<size_t, 3>> input_choices;
@@ -62,10 +64,10 @@ int batchpir_main_client(int argc, char* argv[])
     }
     upper = upper;
     lower = lower + 1;
-    cout << "Main: Starting query generation and information retrieval for " + to_string(DatabaseConstants::num_batches) + " iterations..." << endl;
+    cout << "Main: Starting query generation and information retrieval for " + to_string(num_batches) + " iterations..." << endl;
     auto start = chrono::high_resolution_clock::now();
     int fails = 0;
-    for (int i = 0; i < DatabaseConstants::num_batches; i++) {
+    for (int i = 0; i < num_batches; i++) {
         try {
             vector<uint64_t> entry_indices = generate_batch(tree_height, DatabaseConstants::children, upper, lower);
             auto queries = batch_client.create_queries(entry_indices);
@@ -91,8 +93,8 @@ int batchpir_main_client(int argc, char* argv[])
         cout << "Batch Length: " << tree_height << ", ";
         cout << "Number of Entries: " << input_choices[i][1] << ", ";
         cout << "Entry Size: " << input_choices[i][2] << endl;
-        cout << "Average Indexing time: " << query_gen_times[i].count() / DatabaseConstants::num_batches << " milliseconds" << endl;
-        cout << "Rate of failure: " << fails / DatabaseConstants::num_batches << " %" << endl;
+        cout << "Average Indexing time: " << query_gen_times[i].count() / num_batches << " milliseconds" << endl;
+        cout << "Rate of failure: " << fails / num_batches << " %" << endl;
     }
 
     return 0;

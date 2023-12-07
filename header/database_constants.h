@@ -20,8 +20,6 @@ namespace DatabaseConstants {
     constexpr std::string_view FileName = "..\\..\\tree_data\\";
     // set number of children per node
     constexpr unsigned int children = 2;
-    // number of batches to request
-    constexpr unsigned int num_batches = 100;
 
 }
 

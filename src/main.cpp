@@ -1,14 +1,15 @@
 #include "main_client.h"
 #include "main_server.h"
 
-char* defaults[] = {"File", "server", "3" , "2"};
+const char* defaults[] = {"File", "client", "3" , "2", "100"};
 
-int main(int argc, char* argv[] = defaults)
+int main(int argc, const char* argv[])
 {
+    //For testing
     if (argc == 1) {
         argv = defaults;
     }
-
+    
     std::string call = argv[1];
     if (call == "server") {
         batchpir_main_server(argc, argv);

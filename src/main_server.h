@@ -15,9 +15,11 @@
 using namespace std;
 using namespace chrono;
 
-int batchpir_main_server(int argc, char* argv[])
+int batchpir_main_server(int argc, const char* argv[])
 {
-    unsigned int tree_height = 3;
+    unsigned int tree_height = stoi(argv[2]);
+    unsigned int children = stoi(argv[3]);
+    unsigned int num_batches = stoi(argv[4]);
     const int client_id = 0;
     //  batch size, number of entries, size of entry
     std::vector<std::array<size_t, 3>> input_choices;
