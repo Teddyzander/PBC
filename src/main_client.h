@@ -87,7 +87,7 @@ int batchpir_main_client(int argc, char* argv[])
     for (size_t i = 0; i < input_choices.size(); ++i)
     {
         cout << "Input Parameters: ";
-        cout << "Batch Size: " << input_choices[i][0] << ", ";
+        cout << "Batch Length: " << DatabaseConstants::TreeHeight << ", ";
         cout << "Number of Entries: " << input_choices[i][1] << ", ";
         cout << "Entry Size: " << input_choices[i][2] << endl;
         cout << "Average Indexing time: " << query_gen_times[i].count() / DatabaseConstants::num_batches << " milliseconds" << endl;
