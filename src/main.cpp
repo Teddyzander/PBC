@@ -4,6 +4,9 @@
 int main(int argc, char* argv[])
 {
     cout << argv << std::endl;
+    for (int i = 0; i < argc; i++) {
+        cout << argv[i] << std::endl;
+    }
     if (argv[1] == "server") {
         batchpir_main_server(argc, argv);
     }
