@@ -33,7 +33,7 @@ int batchpir_main_client(int argc, char* argv[])
     std::vector<size_t> communication_list;
 
     std::cout << "***************************************************" << std::endl;
-    std::cout << "             Starting example " << std::endl;
+    std::cout << "             Starting Client " << std::endl;
     std::cout << "***************************************************" << std::endl;
 
     const auto& choice = input_choices[0];

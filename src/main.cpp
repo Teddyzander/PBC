@@ -3,7 +3,16 @@
 
 int main(int argc, char* argv[])
 {
-    batchpir_main_server(argc, argv);
-    batchpir_main_client(argc, argv);
+    cout << argv << std::endl;
+    if (argv[1] == "server") {
+        batchpir_main_server(argc, argv);
+    }
+    else if (argv[1] == "client") {
+        batchpir_main_client(argc, argv);
+    }
+
+    else {
+        std::cout << "No valid arguments given." << std::endl;
+    }    
     return 0;
 }

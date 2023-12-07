@@ -25,8 +25,8 @@ typedef  std::vector<uint64_t> Row;
 typedef  std::vector<Row> PirDB;
 using namespace std;
 using namespace seal;
-using __uint128_t = _Unsigned128;
-using uint128_t = _Unsigned128;
+// using __uint128_t = _Unsigned128;
+// using uint128_t = _Unsigned128;
 
 namespace utils {
 
