@@ -7,10 +7,11 @@ int main(int argc, char* argv[])
     for (int i = 0; i < argc; i++) {
         cout << argv[i] << std::endl;
     }
-    if (argv[2] == "server") {
+    std::string call = argv[2];
+    if (call == "server") {
         batchpir_main_server(argc, argv);
     }
-    else if (argv[2] == "client") {
+    else if (call == "client") {
         batchpir_main_client(argc, argv);
     }
 
