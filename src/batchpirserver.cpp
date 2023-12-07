@@ -5,9 +5,10 @@
 
 using json = nlohmann::ordered_json;
 
-BatchPIRServer::BatchPIRServer(unsigned int tree_height, BatchPirParams &batchpir_params)
+BatchPIRServer::BatchPIRServer(unsigned int tree_height, unsigned int children, BatchPirParams &batchpir_params)
 {
     tree_height_ = tree_height;
+    children_ = children;
     batchpir_params_ = &batchpir_params;
     is_client_keys_set_ = false;
     is_simple_hash_ = false;
@@ -24,7 +25,7 @@ BatchPIRServer::BatchPIRServer(unsigned int tree_height, BatchPirParams &batchpi
     for (int i = 0; i < buckets_.size(); i++) 
     {
         std::ofstream file("../../PBC_data/PBC" + to_string(i+1) + "_" + 
-            to_string(batchpir_params_->get_tree_height()) + "_" + to_string(DatabaseConstants::children) + ".json");
+            to_string(batchpir_params_->get_tree_height()) + "_" + to_string(children_) + ".json");
         json temp_data;
         for (int j = 0; j < buckets_[i].size(); j++)
         {
@@ -50,7 +51,7 @@ void BatchPIRServer::populate_raw_db()
 {
     std::string folder{ batchpir_params_->get_file_name() };
     int tree_height = batchpir_params_->get_tree_height();
-    int children_num = DatabaseConstants::children;
+    int children_num = children_;
     std::string file_name = folder + "WholeTree_" + to_string(tree_height) + "_" + to_string(children_num) + ".JSON";
     std::ifstream myFile(file_name);
     if (myFile.fail()) {
@@ -252,7 +253,7 @@ void BatchPIRServer::prepare_pir_server()
         vector<RawDB> sub_buckets(buckets_.begin() + previous_idx, buckets_.begin() + previous_idx + offset);
         previous_idx += offset;
 
-        PirParams params(max_bucket_size, entry_size, offset, tree_height_, batchpir_params_->get_seal_parameters(), dim_size);
+        PirParams params(max_bucket_size, entry_size, offset, tree_height_, children_, batchpir_params_->get_seal_parameters(), dim_size);
         params.print_values();
         Server server(params, sub_buckets);
 

@@ -2,19 +2,21 @@
 #include "batchpirparams.h"
 
 
-BatchPirParams::BatchPirParams(int batch_size, size_t num_entries, size_t entry_size, unsigned int tree_height, seal::EncryptionParameters seal_params)
+BatchPirParams::BatchPirParams(int batch_size, size_t num_entries, size_t entry_size, unsigned int tree_height, 
+    unsigned int children, seal::EncryptionParameters seal_params)
     : file_name_(DatabaseConstants::FileName),
       tree_height_(tree_height),
       num_hash_funcs_(DatabaseConstants::NumHashFunctions),
       batch_size_(tree_height),
       cuckoo_factor_(DatabaseConstants::CuckooFactor),
       entry_size_(entry_size),
-      max_attempts_(DatabaseConstants::MaxAttempts){
+      max_attempts_(DatabaseConstants::MaxAttempts),
+      children_(children){
 
         seal_params_ = seal_params;
         int num_nodes = 0;
         for (int i = 1; i <= tree_height; i++) {
-            num_nodes += pow(DatabaseConstants::children, i);
+            num_nodes += pow(children_, i);
         }
         num_entries_ = num_nodes;
       }
@@ -98,7 +100,7 @@ std::cout << "|                  Batch Parameters                 |" << std::end
 std::cout << "+---------------------------------------------------+" << std::endl;
 std::cout << std::left << std::setw(20) << "| file_name_: " << file_name_ << std::endl;
 std::cout << std::left << std::setw(20) << "| tree_height_: " << tree_height_ << std::endl;
-std::cout << std::left << std::setw(20) << "| number_of_children: " << DatabaseConstants::children << std::endl;
+std::cout << std::left << std::setw(20) << "| number_of_children: " << children_ << std::endl;
 std::cout << std::left << std::setw(20) << "| number_of_nodes_: " << num_entries_ << std::endl;
 std::cout << std::left << std::setw(20) << "| num_hash_funcs_: " << num_hash_funcs_ << std::endl;
 std::cout << std::left << std::setw(20) << "| batch_size_: " << batch_size_ << std::endl;
@@ -110,7 +112,7 @@ std::cout << "+---------------------------------------------------+" << std::end
 void BatchPirParams::save_params() {
     std::filesystem::create_directory("../../params");
     std::string file_name = "../../params/params_" + to_string(tree_height_) +
-        "_" + to_string(DatabaseConstants::children) + ".txt";
+        "_" + to_string(children_) + ".txt";
     ofstream file_obj;
     file_obj.open(file_name, ios::in);
     auto temp = this;

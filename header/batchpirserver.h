@@ -10,7 +10,7 @@ class BatchPIRServer {
 
 public:
     
-    BatchPIRServer(unsigned int tree_size, BatchPirParams& batchpir_params);
+    BatchPIRServer(unsigned int tree_size, unsigned int children, BatchPirParams& batchpir_params);
     std::unordered_map<std::string, uint64_t> get_hash_map() const;
     void set_client_keys(uint32_t client_id, std::pair<seal::GaloisKeys, seal::RelinKeys> keys);
     void get_client_keys();
@@ -20,6 +20,7 @@ public:
     chrono::milliseconds timer;
     unsigned long int database_size;
     unsigned int tree_height_;
+    unsigned int children_;
    
 
     

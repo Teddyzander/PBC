@@ -10,7 +10,7 @@ using namespace std;
 
 class BatchPIRClient {
 public:
-    BatchPIRClient(unsigned int tree_height, const BatchPirParams& params);
+    BatchPIRClient(unsigned int tree_height, unsigned int children, const BatchPirParams& params);
     void set_map(std::unordered_map<std::string, uint64_t> map);
     vector<PIRQuery> create_queries(vector<uint64_t> batch);
     vector<RawResponses> decode_responses(vector<PIRResponseList> responses);
@@ -22,6 +22,7 @@ public:
     size_t get_serialized_commm_size();
     vector<std::string> node_pos;
     unsigned int tree_height_;
+    unsigned int children_;
 
 private:
     BatchPirParams batchpir_params_;

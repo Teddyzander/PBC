@@ -25,7 +25,7 @@ int batchpir_main_server(int argc, const char* argv[])
     std::vector<std::array<size_t, 3>> input_choices;
     size_t num_nodes = 0;
     for (int i = 1; i <= tree_height; i++) {
-        num_nodes += pow(DatabaseConstants::children, i);
+        num_nodes += pow(children, i);
     }
     input_choices.push_back({ tree_height, num_nodes, 32 });
 
@@ -45,26 +45,26 @@ int batchpir_main_server(int argc, const char* argv[])
 
     cout << "Generating Tree..." << endl;
     auto start = chrono::high_resolution_clock::now();
-    utils::create_tree_file(tree_height, DatabaseConstants::children);
+    utils::create_tree_file(tree_height, children);
     auto end = chrono::high_resolution_clock::now();
     auto duration_init = chrono::duration_cast<chrono::milliseconds>(end - start);
     init_times.push_back(duration_init);
-    cout << "Number of Leaves: " << std::to_string(int(pow(DatabaseConstants::children, tree_height))) <<
+    cout << "Number of Leaves: " << std::to_string(int(pow(children, tree_height))) <<
         " (height: " << std::to_string(tree_height) << ", children: " <<
-        std::to_string(DatabaseConstants::children) << ") generated." << endl;
+        std::to_string(children) << ") generated." << endl;
 
     auto encryption_params = utils::create_encryption_parameters(selection);
-    BatchPirParams params(choice[0], choice[1], choice[2], tree_height, encryption_params);
+    BatchPirParams params(choice[0], choice[1], choice[2], tree_height, children, encryption_params);
 
-    BatchPIRServer batch_server(tree_height, params);
+    BatchPIRServer batch_server(tree_height, children, params);
     database_times.push_back(batch_server.timer);
 
     params.save_params();
     
     auto hash_map = batch_server.get_hash_map();
     size_t max_bucket_size = params.get_max_bucket_size();
-    utils::save_bucket_size(max_bucket_size, tree_height);
-    utils::save_map(hash_map, tree_height);
+    utils::save_bucket_size(max_bucket_size, tree_height, children);
+    utils::save_map(hash_map, tree_height, children);
     unsigned long cap = sizeof(hash_map);
     cout << "Calculating Map Size..." << endl;
     for (std::unordered_map<std::string, uint64_t>::const_iterator it = hash_map.begin(); it != hash_map.end(); ++it) {

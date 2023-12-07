@@ -31,37 +31,37 @@ using uint128_t = _Unsigned128;
 
 namespace utils {
 
-    inline void save_bucket_size(size_t bucket_size, unsigned int tree_height) {
+    inline void save_bucket_size(size_t bucket_size, unsigned int tree_height, unsigned int children) {
         std::filesystem::create_directory("../../params");
         std::string file_name = "../../params/max_bucket_" + to_string(tree_height) +
-            "_" + to_string(DatabaseConstants::children) + ".txt";
+            "_" + to_string(children) + ".txt";
         ifstream f(file_name);
         ofstream o(file_name);
         o << bucket_size << std::endl;
     }
 
-    inline size_t load_bucket_size(unsigned int tree_height) {
+    inline size_t load_bucket_size(unsigned int tree_height, unsigned int children) {
         std::string file_name = "../../params/max_bucket_" + to_string(tree_height) +
-            "_" + to_string(DatabaseConstants::children) + ".txt";
+            "_" + to_string(children) + ".txt";
         std::fstream fin(file_name, fstream::in);
         size_t ch;
         fin >> ch;
         return ch;
     }
 
-    inline void save_map(std::unordered_map<std::string, uint64_t> map, unsigned int tree_height) {
+    inline void save_map(std::unordered_map<std::string, uint64_t> map, unsigned int tree_height, unsigned int children) {
         std::filesystem::create_directory("../../maps");
         nlohmann::json j_map(map);
         std::string file_name = "../../maps/map_" + to_string(tree_height) +
-            "_" + to_string(DatabaseConstants::children) + ".JSON";
+            "_" + to_string(children) + ".JSON";
         ifstream f(file_name);
         ofstream o(file_name);
         o << j_map << std::endl;
     }
 
-    inline std::unordered_map<std::string, uint64_t> load_map(unsigned int tree_height) {
+    inline std::unordered_map<std::string, uint64_t> load_map(unsigned int tree_height, unsigned int children) {
         std::string file_name = "../../maps/map_" + to_string(tree_height) +
-            "_" + to_string(DatabaseConstants::children) + ".JSON";
+            "_" + to_string(children) + ".JSON";
         std::ifstream f(file_name);
         nlohmann::json data = nlohmann::json::parse(f);
         std::unordered_map<std::string, uint64_t> map = data.get<std::unordered_map<std::string, uint64_t>>();

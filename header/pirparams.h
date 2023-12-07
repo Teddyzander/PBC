@@ -13,7 +13,8 @@ using namespace std;
 
 class PirParams {
 public:
-    PirParams(size_t num_entries, size_t entry_size, size_t db_count, unsigned int tree_height, seal::EncryptionParameters seal_params, size_t first_two_dimensions);
+    PirParams(size_t num_entries, size_t entry_size, size_t db_count, unsigned int tree_height,
+        unsigned int children, seal::EncryptionParameters seal_params, size_t first_two_dimensions);
 
     size_t get_num_entries() const;
     size_t get_rounded_num_entries() const;
@@ -27,6 +28,7 @@ public:
     uint64_t get_default_value() const;
     void print_values();
     unsigned int tree_height_;
+    unsigned int children_;
     
 
 private:

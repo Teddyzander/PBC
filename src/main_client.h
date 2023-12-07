@@ -25,7 +25,7 @@ int batchpir_main_client(int argc, const char* argv[])
     std::vector<std::array<size_t, 3>> input_choices;
     size_t num_nodes = 0;
     for (int i = 1; i <= tree_height; i++) {
-        num_nodes += pow(DatabaseConstants::children, i);
+        num_nodes += pow(children, i);
     }
     input_choices.push_back({ tree_height, num_nodes, 32 });
 
@@ -44,19 +44,19 @@ int batchpir_main_client(int argc, const char* argv[])
     string selection = std::to_string(choice[0]) + "," + std::to_string(choice[1]) + "," + std::to_string(choice[2]);
 
     auto encryption_params = utils::create_encryption_parameters(selection);
-    BatchPirParams params(choice[0], choice[1], choice[2], tree_height, encryption_params);
-    size_t bucket_size = utils::load_bucket_size(tree_height);
+    BatchPirParams params(choice[0], choice[1], choice[2], tree_height, children, encryption_params);
+    size_t bucket_size = utils::load_bucket_size(tree_height, children);
     params.set_max_bucket_size(bucket_size);
 
-    BatchPIRClient batch_client(tree_height, params);
+    BatchPIRClient batch_client(tree_height, children, params);
 
-    auto hash_map = utils::load_map(tree_height);
+    auto hash_map = utils::load_map(tree_height, children);
     batch_client.set_map(hash_map);
 
     long unsigned int upper = 0;
     long unsigned int lower = 0;
     for (int i = 0; i <= tree_height; i++) {
-        int nodes = pow(DatabaseConstants::children, i);
+        int nodes = pow(children, i);
         upper += nodes;
         if (i != tree_height) {
             lower += nodes;
@@ -69,7 +69,7 @@ int batchpir_main_client(int argc, const char* argv[])
     int fails = 0;
     for (int i = 0; i < num_batches; i++) {
         try {
-            vector<uint64_t> entry_indices = generate_batch(tree_height, DatabaseConstants::children, upper, lower);
+            vector<uint64_t> entry_indices = generate_batch(tree_height, children, upper, lower);
             auto queries = batch_client.create_queries(entry_indices);
             auto hashed_query = batch_client.get_cuckoo_table();
         }
