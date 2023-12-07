@@ -1,7 +1,7 @@
 #include "batchpirclient.h"
 
-BatchPIRClient::BatchPIRClient(const BatchPirParams &params)
-    : batchpir_params_(params), is_cuckoo_generated_(false), is_map_set_(false)
+BatchPIRClient::BatchPIRClient(unsigned int tree_height, const BatchPirParams &params)
+    : batchpir_params_(params), is_cuckoo_generated_(false), is_map_set_(false), tree_height_(tree_height)
 {
     max_attempts_ = batchpir_params_.get_max_attempts();
 
@@ -226,7 +226,7 @@ void BatchPIRClient::prepare_pir_clients()
     {
         const size_t num_dbs = std::min(per_client_capacity, static_cast<size_t>(num_buckets - previous_idx));
         previous_idx += num_dbs;
-        PirParams params(max_bucket_size, entry_size, num_dbs, batchpir_params_.get_seal_parameters(), dim_size);
+        PirParams params(max_bucket_size, entry_size, num_dbs, tree_height_,  batchpir_params_.get_seal_parameters(), dim_size);
         if (i == 0)
         {
             Client client(params);

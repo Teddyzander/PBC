@@ -18,8 +18,6 @@ namespace DatabaseConstants {
     constexpr uint64_t DefaultVal =  std::numeric_limits<uint64_t>::max();
     // name of folderwhere trees are stored
     constexpr std::string_view FileName = "..\\..\\tree_data\\";
-    // set height of the tree
-    constexpr unsigned int TreeHeight = 3;
     // set number of children per node
     constexpr unsigned int children = 2;
     // number of batches to request

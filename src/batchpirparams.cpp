@@ -2,18 +2,18 @@
 #include "batchpirparams.h"
 
 
-BatchPirParams::BatchPirParams(int batch_size, size_t num_entries, size_t entry_size, seal::EncryptionParameters seal_params)
+BatchPirParams::BatchPirParams(int batch_size, size_t num_entries, size_t entry_size, unsigned int tree_height, seal::EncryptionParameters seal_params)
     : file_name_(DatabaseConstants::FileName),
-      tree_height_(DatabaseConstants::TreeHeight),
+      tree_height_(tree_height),
       num_hash_funcs_(DatabaseConstants::NumHashFunctions),
-      batch_size_(DatabaseConstants::TreeHeight),
+      batch_size_(tree_height),
       cuckoo_factor_(DatabaseConstants::CuckooFactor),
       entry_size_(entry_size),
       max_attempts_(DatabaseConstants::MaxAttempts){
 
         seal_params_ = seal_params;
         int num_nodes = 0;
-        for (int i = 1; i <= DatabaseConstants::TreeHeight; i++) {
+        for (int i = 1; i <= tree_height; i++) {
             num_nodes += pow(DatabaseConstants::children, i);
         }
         num_entries_ = num_nodes;
@@ -109,7 +109,7 @@ std::cout << "+---------------------------------------------------+" << std::end
 
 void BatchPirParams::save_params() {
     std::filesystem::create_directory("../../params");
-    std::string file_name = "../../params/params_" + to_string(DatabaseConstants::TreeHeight) +
+    std::string file_name = "../../params/params_" + to_string(tree_height_) +
         "_" + to_string(DatabaseConstants::children) + ".txt";
     ofstream file_obj;
     file_obj.open(file_name, ios::in);

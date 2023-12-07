@@ -11,7 +11,7 @@ using namespace seal;
 
 class BatchPirParams {
 public:
-    BatchPirParams(int batch_size ,size_t num_entries, size_t entry_size, EncryptionParameters seal_params);
+    BatchPirParams(int batch_size, size_t num_entries, size_t entry_size, unsigned int tree_height, EncryptionParameters seal_params);
 
     std::string_view get_file_name();
     int get_tree_height();

@@ -5,8 +5,9 @@
 
 using json = nlohmann::ordered_json;
 
-BatchPIRServer::BatchPIRServer(BatchPirParams &batchpir_params)
+BatchPIRServer::BatchPIRServer(unsigned int tree_height, BatchPirParams &batchpir_params)
 {
+    tree_height_ = tree_height;
     batchpir_params_ = &batchpir_params;
     is_client_keys_set_ = false;
     is_simple_hash_ = false;
@@ -251,7 +252,7 @@ void BatchPIRServer::prepare_pir_server()
         vector<RawDB> sub_buckets(buckets_.begin() + previous_idx, buckets_.begin() + previous_idx + offset);
         previous_idx += offset;
 
-        PirParams params(max_bucket_size, entry_size, offset, batchpir_params_->get_seal_parameters(), dim_size);
+        PirParams params(max_bucket_size, entry_size, offset, tree_height_, batchpir_params_->get_seal_parameters(), dim_size);
         params.print_values();
         Server server(params, sub_buckets);
 

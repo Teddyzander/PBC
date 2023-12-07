@@ -31,17 +31,17 @@ using namespace seal;
 
 namespace utils {
 
-    inline void save_bucket_size(size_t bucket_size) {
+    inline void save_bucket_size(size_t bucket_size, unsigned int tree_height) {
         std::filesystem::create_directory("../../params");
-        std::string file_name = "../../params/max_bucket_" + to_string(DatabaseConstants::TreeHeight) +
+        std::string file_name = "../../params/max_bucket_" + to_string(tree_height) +
             "_" + to_string(DatabaseConstants::children) + ".txt";
         ifstream f(file_name);
         ofstream o(file_name);
         o << bucket_size << std::endl;
     }
 
-    inline size_t load_bucket_size() {
-        std::string file_name = "../../params/max_bucket_" + to_string(DatabaseConstants::TreeHeight) +
+    inline size_t load_bucket_size(unsigned int tree_height) {
+        std::string file_name = "../../params/max_bucket_" + to_string(tree_height) +
             "_" + to_string(DatabaseConstants::children) + ".txt";
         std::fstream fin(file_name, fstream::in);
         size_t ch;
@@ -49,18 +49,18 @@ namespace utils {
         return ch;
     }
 
-    inline void save_map(std::unordered_map<std::string, uint64_t> map) {
+    inline void save_map(std::unordered_map<std::string, uint64_t> map, unsigned int tree_height) {
         std::filesystem::create_directory("../../maps");
         nlohmann::json j_map(map);
-        std::string file_name = "../../maps/map_" + to_string(DatabaseConstants::TreeHeight) + 
+        std::string file_name = "../../maps/map_" + to_string(tree_height) +
             "_" + to_string(DatabaseConstants::children) + ".JSON";
         ifstream f(file_name);
         ofstream o(file_name);
         o << j_map << std::endl;
     }
 
-    inline std::unordered_map<std::string, uint64_t> load_map() {
-        std::string file_name = "../../maps/map_" + to_string(DatabaseConstants::TreeHeight) +
+    inline std::unordered_map<std::string, uint64_t> load_map(unsigned int tree_height) {
+        std::string file_name = "../../maps/map_" + to_string(tree_height) +
             "_" + to_string(DatabaseConstants::children) + ".JSON";
         std::ifstream f(file_name);
         nlohmann::json data = nlohmann::json::parse(f);
