@@ -3,9 +3,6 @@
 
 int main(int argc, char* argv[])
 {
-    for (int i = 0; i < argc; i++) {
-        cout << argv[i] << std::endl;
-    }
     std::string call = argv[1];
     if (call == "server") {
         batchpir_main_server(argc, argv);
