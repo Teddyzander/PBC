@@ -25,8 +25,9 @@ typedef  std::vector<uint64_t> Row;
 typedef  std::vector<Row> PirDB;
 using namespace std;
 using namespace seal;
-// using __uint128_t = _Unsigned128;
-// using uint128_t = _Unsigned128;
+// comment out below "using" if using linux
+//using __uint128_t = _Unsigned128;
+//using uint128_t = _Unsigned128;
 
 namespace utils {
 
@@ -72,10 +73,10 @@ namespace utils {
         return pow(2, ceil(log2(n)));
     }
 
-    inline std::vector<std::vector<unsigned char>> return_request(std::vector<RawDB> buckets, std::vector<unsigned __int64> query) {
+    inline std::vector<std::vector<unsigned char>> return_request(std::vector<RawDB> buckets, std::vector<unsigned int> query) {
         std::vector<std::vector<unsigned char>> request;
-
-        for (int i = 0; i < query.size(); i++)
+        int temp_size = query.size();
+        for (int i = 0; i < temp_size; i++)
             if (query[i] < buckets[i].size()) {
                  request.push_back(buckets[i][query[i]]);
             }
@@ -96,7 +97,7 @@ namespace utils {
             for (int i = 1; i <= h; i++) {
                 num_nodes += pow(q, i);
             }
-            unsigned __int64 entry_length = 64;
+            unsigned int entry_length = 64;
             static const char hex_characters[] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
             for (int i = 2; i <= num_nodes+1; i++) {
                 string str = "";

@@ -13,6 +13,8 @@ int main(int argc, char* argv[])
 
     else {
         std::cout << "No valid arguments given." << std::endl;
+        batchpir_main_server(argc, argv);
+        batchpir_main_client(argc, argv);
     }    
     return 0;
 }
