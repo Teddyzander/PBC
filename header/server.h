@@ -29,7 +29,6 @@ public:
 
     void set_client_keys(uint32_t client_id, std::pair<seal::GaloisKeys, seal::RelinKeys>);
     void set_client_keys(uint32_t client_id, std::pair<seal::GaloisKeys, seal::RelinKeys> keys, uint64_t id);
-    void get_client_keys();
 
     PIRResponseList generate_response(uint32_t client_id, PIRQuery query);
 

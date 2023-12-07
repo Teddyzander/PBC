@@ -42,12 +42,6 @@ void Server::set_client_keys(uint32_t client_id, std::pair<seal::GaloisKeys, sea
     is_client_keys_set_ = true;
 }
 
-void Server::get_client_keys()
-{
-
-    // cout << "server_id_: " << server_id_ << endl;
-}
-
 // Implementation of populateRawDB() function
 void Server::populate_raw_db()
 {

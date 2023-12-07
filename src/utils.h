@@ -28,6 +28,25 @@ using uint128_t = _Unsigned128;
 
 namespace utils {
 
+    inline void save_map(std::unordered_map<std::string, uint64_t> map) {
+        std::filesystem::create_directory("../../maps");
+        nlohmann::json j_map(map);
+        std::string file_name = "../../maps/map_" + to_string(DatabaseConstants::TreeHeight) + 
+            "_" + to_string(DatabaseConstants::children) + ".JSON";
+        ifstream f(file_name);
+        ofstream o(file_name);
+        o << j_map << std::endl;
+    }
+
+    inline std::unordered_map<std::string, uint64_t> load_map() {
+        std::string file_name = "../../maps/map_" + to_string(DatabaseConstants::TreeHeight) +
+            "_" + to_string(DatabaseConstants::children) + ".JSON";
+        std::ifstream f(file_name);
+        nlohmann::json data = nlohmann::json::parse(f);
+        std::unordered_map<std::string, uint64_t> map = data.get<std::unordered_map<std::string, uint64_t>>();
+        return map;
+    }
+
     // Returns the next power of 2 for a given number
     inline size_t next_power_of_two(size_t n) {
         return pow(2, ceil(log2(n)));
@@ -108,7 +127,7 @@ namespace utils {
         int n = distr(gen);
         leafs.push_back(n);
         int i = 0;
-        while (n / q >= q) {
+        while (n > q + 1) {
             n = fetch_node(n, q);
             leafs.push_back(n);
         }
@@ -217,27 +236,7 @@ namespace utils {
         seal_params.set_coeff_modulus(CoeffModulus::Create(PolyDegree, CoeffMods));
         seal_params.set_plain_modulus(PlainModulus::Batching(PolyDegree, PlaintextModBitss));
 
-
-std::cout << "+---------------------------------------------------+" << std::endl;
-std::cout << "|               ENCRYPTION PARAMETERS               |" << std::endl;
-std::cout << "+---------------------------------------------------+" << std::endl;
-std::cout << "|  seal_params_.poly_modulus_degree  = " << seal_params.poly_modulus_degree() << std::endl;
-
 auto coeff_modulus_size = seal_params.coeff_modulus().size();
-std::cout << "|  seal_params_.coeff_modulus().bit_count   = [";
-
-for (std::size_t i = 0; i < coeff_modulus_size - 1; i++)
-{
-    std::cout << seal_params.coeff_modulus()[i].bit_count() << " + ";
-}
-
-std::cout << seal_params.coeff_modulus().back().bit_count();
-std::cout << "] bits" << std::endl;
-std::cout << "|  seal_params_.coeff_modulus().size = " << seal_params.coeff_modulus().size() << std::endl;
-std::cout << "|  seal_params_.plain_modulus().bit_count = " << seal_params.plain_modulus().bit_count() << std::endl;
-std::cout << "+---------------------------------------------------+" << std::endl;
-
-
 
     return seal_params;
     }

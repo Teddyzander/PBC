@@ -75,6 +75,7 @@ void BatchPIRServer::populate_raw_db()
     };
 
     // Populate the rawdb vector with entries
+    auto start = chrono::high_resolution_clock::now();
     for (size_t i = 0; i < db_entries; ++i)
     {
         std::string temp_string = data[to_string(i + 2)];
@@ -82,6 +83,9 @@ void BatchPIRServer::populate_raw_db()
         temp_char.insert(temp_char.begin(), temp_string.begin(), temp_string.end());
         rawdb_[i] = temp_char;
     }
+    auto end = chrono::high_resolution_clock::now();
+    timer = chrono::duration_cast<chrono::milliseconds>(end - start);
+    database_size = sizeof(rawdb_) + (32 * rawdb_.size());
 }
 
 std::unordered_map<std::string, uint64_t> BatchPIRServer::get_hash_map() const
@@ -156,7 +160,6 @@ std::vector<std::vector<uint64_t>> BatchPIRServer::simeple_hash_with_map()
     buckets_.resize(total_buckets);
 
     std::vector<std::vector<uint64_t>> map(total_buckets);
-
     for (int i = 0; i < db_entries; i++)
     {
         std::vector<size_t> candidates = utils::get_candidate_buckets(i, num_candidates, total_buckets);
@@ -165,6 +168,7 @@ std::vector<std::vector<uint64_t>> BatchPIRServer::simeple_hash_with_map()
             buckets_[b].push_back(rawdb_[i]);
             map[b].push_back(i);
         }
+    
     }
 
     // print_stats();
@@ -262,15 +266,6 @@ void BatchPIRServer::set_client_keys(uint32_t client_id, std::pair<seal::GaloisK
         server_list_[i].set_client_keys(client_id, keys);
     }
     is_client_keys_set_ = true;
-}
-
-void BatchPIRServer::get_client_keys()
-{
-
-    for (int i = 0; i < server_list_.size(); i++)
-    {
-        server_list_[i].get_client_keys();
-    }
 }
 
 PIRResponseList BatchPIRServer::generate_response(uint32_t client_id, vector<PIRQuery> queries)

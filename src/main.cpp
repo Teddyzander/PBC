@@ -1,9 +1,9 @@
 #include <iostream>
+#include <map>
 #include <cstdlib>
 #include <cassert>
 #include <chrono>
 #include <functional>
-#include "header/server.h"
 #include "pirparams.h"
 #include "client.h"
 #include "batchpirparams.h"
@@ -16,139 +16,6 @@
 using namespace std;
 using namespace chrono;
 
-void print_usage()
-{
-    std::cout << "Usage: vectorized_batch_pir -n <db_entries> -s <entry_size>\n";
-}
-
-bool validate_arguments(int argc, char *argv[], size_t &db_entries, size_t &entry_size)
-{
-    if (argc == 2 && string(argv[1]) == "-h")
-    {
-        print_usage();
-        return false;
-    }
-    if (argc != 5 || string(argv[1]) != "-n" || string(argv[3]) != "-s")
-    {
-        std::cerr << "Error: Invalid arguments.\n";
-        print_usage();
-        return false;
-    }
-    db_entries = stoull(argv[2]);
-    entry_size = stoull(argv[4]);
-    return true;
-}
-
-int vectorized_pir_main(int argc, char *argv[])
-{
-    size_t db_entries = 0;
-    size_t entry_size = 0;
-    const int client_id = 0;
-
-    // Validate the command line arguments
-    if (!validate_arguments(argc, argv, db_entries, entry_size))
-    {
-        // Return an error code if the arguments are invalid
-        return 1;
-    }
-
-    uint64_t num_databases = 128;
-    uint64_t first_dim = 64;
-
-    auto encryption_params = utils::create_encryption_parameters();
-
-    // Create a PirParams object with the specified number of entries and entry size and size of first dimension
-    PirParams params(db_entries, entry_size, num_databases, encryption_params, first_dim);
-    params.print_values();
-
-    // Create a Server object with the PirParams object
-    Server server(params);
-
-    // Create a Client object with the PirParams object
-    Client client(params);
-
-    // Populate the raw database in the Server object. Change this function to load database from other source
-    server.load_raw_dbs();
-
-    // Convert the raw database to the PIR database
-    server.convert_merge_pir_dbs();
-
-
-    // Convert the raw database to the PIR database
-    server.ntt_preprocess_db();
-
-
-
-    server.set_client_keys(client_id, client.get_public_keys());
-
-    vector<uint64_t> entry_indices;
-    for (int i = 0; i < num_databases; i++)
-    {
-        // entry_indices.push_back(rand() % db_entries);
-        entry_indices.push_back(0);
-    }
-
-
-    auto query = client.gen_query(entry_indices);
-
-    auto start_time = std::chrono::high_resolution_clock::now();
-    PIRResponseList response = server.generate_response(client_id, query);
-    auto end_time = std::chrono::high_resolution_clock::now();
-    auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-
-    // Print the elapsed time in milliseconds
-    std::cout << "generate_response time: " << elapsed_time.count() << " ms" << std::endl;
-
-    auto entries = client.single_pir_decode_responses(response);
-
-    server.check_decoded_entries(entries, entry_indices);
-
-    cout << "Main: decoded entries matched" << endl;
-    return 0;
-}
-
-int hashing_test_main(int argc, char *argv[])
-{
-
-    if (argc != 4)
-    {
-        std::cerr << "Usage: " << argv[0] << " batch_size num_entries entry_size" << std::endl;
-        return 1;
-    }
-
-    int batch_size = std::stoi(argv[1]);
-    size_t num_entries = std::stoull(argv[2]);
-    size_t entry_size = std::stoull(argv[3]);
-
-    auto encryption_params = utils::create_encryption_parameters();
-
-    BatchPirParams params(batch_size, num_entries, entry_size, encryption_params);
-    BatchPIRClient client(params);
-
-    vector<uint64_t> myvec(batch_size);
-
-    int trials = std::pow(2, 30);
-    for (int j = 0; j < trials; j++)
-    {
-        cout << "Trial " << j << "/" << trials << ": ";
-        for (int i = 0; i < batch_size; i++)
-        {
-            myvec[i] = rand() % num_entries;
-        }
-
-        if (client.cuckoo_hash_witout_checks(myvec))
-        {
-            cout << "success" << endl;
-        }
-        else
-        {
-            cout << "failure" << endl;
-            throw std::invalid_argument("Attempt failed");
-        }
-    }
-    return 0;
-}
-
 int batchpir_main(int argc, char* argv[])
 {
     const int client_id = 0;
@@ -158,9 +25,10 @@ int batchpir_main(int argc, char* argv[])
     for (int i = 1; i <= DatabaseConstants::TreeHeight; i++) {
         num_nodes += pow(DatabaseConstants::children, i);
     }
-    input_choices.push_back({DatabaseConstants::TreeHeight, num_nodes, 64});
+    input_choices.push_back({DatabaseConstants::TreeHeight, num_nodes, 32});
 
     std::vector<std::chrono::milliseconds> init_times;
+    std::vector<std::chrono::milliseconds> database_times;
     std::vector<std::chrono::milliseconds> query_gen_times;
     std::vector<std::chrono::milliseconds> resp_gen_times;
     std::vector<size_t> communication_list;
@@ -190,9 +58,19 @@ int batchpir_main(int argc, char* argv[])
     init_times.push_back(duration_init);
 
     BatchPIRClient batch_client(params);
+    end = chrono::high_resolution_clock::now();
+    database_times.push_back(batch_server.timer);
 
-    auto map = batch_server.get_hash_map();
-    batch_client.set_map(map);
+    auto hash_map = batch_server.get_hash_map();
+    utils::save_map(hash_map);
+    // auto hash_map = utils::load_map();
+    unsigned long cap = sizeof(hash_map);
+    cout << "Calculating Map Size..." << endl;
+    for (std::unordered_map<std::string, uint64_t>::const_iterator it = hash_map.begin(); it != hash_map.end(); ++it) {
+        cap += it->first.capacity();
+        cap += 32;
+    }
+    batch_client.set_map(hash_map);
 
     batch_server.set_client_keys(client_id, batch_client.get_public_keys());
 
@@ -235,19 +113,14 @@ int batchpir_main(int argc, char* argv[])
         cout << "Number of Entries: " << input_choices[i][1] << ", ";
         cout << "Entry Size: " << input_choices[i][2] << endl;
 
-        cout << "Database Initialization time: " << init_times[i].count() << " milliseconds" << endl;
+        cout << "Tree Initialization time: " << init_times[i].count() << " milliseconds" << endl;
+        cout << "PBC database Hashing time: " << database_times[i].count() << " milliseconds" << endl;
         cout << "Average Indexing time: " << query_gen_times[i].count() / DatabaseConstants::num_batches << " milliseconds" << endl;
-        cout << endl;
+        cout << "Database Size: " << batch_server.database_size << " bytes" << endl;
+        cout << "Map Size: " << cap << " bytes" << endl;
+        float ratio = (float)cap / (float)batch_server.database_size;
+        cout << "Approximate Ratio: " << ratio << endl;
     }
 
-    return 0;
-}
-
-
-
-int main(int argc, char *argv[])
-{
-    //vectorized_pir_main(argc, argv);
-    batchpir_main(argc, argv);
     return 0;
 }
