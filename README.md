@@ -22,7 +22,7 @@ cmake --build build
 Once the build process is complete, parameters can be changed in database_constants.h. The only parameter that requires changing before testing is *FileName* - please change to the location you wish to save the tree JSON files. The following command to execute the Vectorized Batch PIR:
 
 ```
-./build/bin/vectorized_batch_pir
+./build/bin/vectorized_batch_pir 3 2 100
 ```
 
 This will run the Vectorized Batch PIR for the three input scenarios mentioned below:
