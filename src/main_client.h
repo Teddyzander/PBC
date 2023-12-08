@@ -23,7 +23,7 @@ int batchpir_main_client(int argc, const char* argv[])
     std::filesystem::create_directory("client_console");
     std::string out_name = "client_console/client_" + std::to_string(tree_height) + "_" + std::to_string(children) + ".txt";
     const char* out = out_name.c_str();
-    freopen(out, "w", stdout);
+    FILE* output_file = freopen(out, "w", stdout);
     const int client_id = 0;
     //  batch size, number of entries, size of entry
     std::vector<std::array<size_t, 3>> input_choices;
