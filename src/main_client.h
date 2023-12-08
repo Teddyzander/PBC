@@ -48,11 +48,6 @@ int batchpir_main_client(int argc, const char* argv[])
     size_t bucket_size = utils::load_bucket_size(tree_height, children);
     params.set_max_bucket_size(bucket_size);
 
-    BatchPIRClient batch_client(tree_height, children, params);
-
-    auto hash_map = utils::load_map(tree_height, children);
-    batch_client.set_map(hash_map);
-
     long unsigned int upper = 0;
     long unsigned int lower = 0;
     for (int i = 0; i <= tree_height; i++) {
@@ -67,15 +62,32 @@ int batchpir_main_client(int argc, const char* argv[])
     cout << "Main: Starting query generation and information retrieval for " + to_string(num_batches) + " iterations..." << endl;
     auto start = chrono::high_resolution_clock::now();
     int fails = 0;
+    std::filesystem::create_directory("../../requests");
+    std::ofstream myfile;
+    std::string file_name = "../../requests/indicies_" + to_string(tree_height) + "_" + to_string(children) + ".txt";
+    myfile.open(file_name, std::ofstream::app);
+    unsigned int num_buckets = ceil(DatabaseConstants::CuckooFactor * tree_height);
     for (int i = 0; i < num_batches; i++) {
         try {
+            BatchPIRClient batch_client(tree_height, children, params);
+
+            auto hash_map = utils::load_map(tree_height, children);
+            batch_client.set_map(hash_map);
             vector<uint64_t> entry_indices = generate_batch(tree_height, children, upper, lower);
             auto queries = batch_client.create_queries(entry_indices);
             auto hashed_query = batch_client.get_cuckoo_table();
+            auto leaves = batch_client.leaves;
+            for (int v = 0; v < num_buckets; v++) {
+                if (leaves[v] >= 0) {
+                    myfile << "PBC" + to_string(v) + "_" + to_string(tree_height) + "_" + to_string(children) + ".json; " +
+                        "NodeID: " + to_string(leaves[v]) + "; index: " + to_string(hashed_query[v]) + "\n";
+                }
+            }
         }
         catch (std::invalid_argument const&) {
             fails++;
         }
+        myfile << "\n";
         // auto request = return_request(buckets, hashed_query);
     }
     auto end = chrono::high_resolution_clock::now();

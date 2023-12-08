@@ -194,17 +194,20 @@ void BatchPIRClient::translate_cuckoo()
     {
         throw std::runtime_error("Error: Cannot translate the data because either the map has not been set or the cuckoo hash table has not been generated.");
     }
-
     auto num_buckets = cuckoo_table_.size();
+    std::vector<int> arr(num_buckets);
     for (int i = 0; i < num_buckets; i++)
     {
+        arr[i] = cuckoo_table_[i];
         // check if bucket is empty
         if (cuckoo_table_[i] != batchpir_params_.get_default_value())
         {
+            
             // convert from db index to bucket index
-            cuckoo_table_[i] = map_[to_string(cuckoo_table_[i]) + to_string(i)];
+            cuckoo_table_[i] = map_[to_string(cuckoo_table_[i]) + to_string(i)]; 
         }
     }
+    leaves = arr;
 }
 
 void BatchPIRClient::prepare_pir_clients()

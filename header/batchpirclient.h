@@ -21,6 +21,7 @@ public:
     vector<uint64_t> get_cuckoo_table();
     size_t get_serialized_commm_size();
     vector<std::string> node_pos;
+    vector<int> leaves;
     unsigned int tree_height_;
     unsigned int children_;
 
