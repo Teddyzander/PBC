@@ -64,18 +64,17 @@ int batchpir_main_client(int argc, const char* argv[])
     upper = upper;
     lower = lower + 1;
     cout << "Main: Starting query generation and information retrieval for " + to_string(num_batches) + " iterations..." << endl;
-    auto start = chrono::high_resolution_clock::now();
     int fails = 0;
     std::filesystem::create_directory("requests");
     std::ofstream myfile;
     std::string file_name = "requests/indices_" + to_string(tree_height) + "_" + to_string(children) + ".txt";
     myfile.open(file_name, std::ofstream::app);
     unsigned int num_buckets = ceil(DatabaseConstants::CuckooFactor * tree_height);
+    auto hash_map = utils::load_map(tree_height, children);
+    auto start = chrono::high_resolution_clock::now();
     for (int i = 0; i < num_batches; i++) {
         try {
             BatchPIRClient batch_client(tree_height, children, params);
-
-            auto hash_map = utils::load_map(tree_height, children);
             batch_client.set_map(hash_map);
             vector<uint64_t> entry_indices = generate_batch(tree_height, children, upper, lower);
             auto queries = batch_client.create_queries(entry_indices);
