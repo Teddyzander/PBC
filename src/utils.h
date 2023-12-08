@@ -32,8 +32,8 @@ using namespace seal;
 namespace utils {
 
     inline void save_bucket_size(size_t bucket_size, unsigned int tree_height, unsigned int children) {
-        std::filesystem::create_directory("../../params");
-        std::string file_name = "../../params/max_bucket_" + to_string(tree_height) +
+        std::filesystem::create_directory("params");
+        std::string file_name = "params/max_bucket_" + to_string(tree_height) +
             "_" + to_string(children) + ".txt";
         ifstream f(file_name);
         ofstream o(file_name);
@@ -41,7 +41,7 @@ namespace utils {
     }
 
     inline size_t load_bucket_size(unsigned int tree_height, unsigned int children) {
-        std::string file_name = "../../params/max_bucket_" + to_string(tree_height) +
+        std::string file_name = "params/max_bucket_" + to_string(tree_height) +
             "_" + to_string(children) + ".txt";
         std::fstream fin(file_name, fstream::in);
         size_t ch;
@@ -50,9 +50,9 @@ namespace utils {
     }
 
     inline void save_map(std::unordered_map<std::string, uint64_t> map, unsigned int tree_height, unsigned int children) {
-        std::filesystem::create_directory("../../maps");
+        std::filesystem::create_directory("maps");
         nlohmann::json j_map(map);
-        std::string file_name = "../../maps/map_" + to_string(tree_height) +
+        std::string file_name = "maps/map_" + to_string(tree_height) +
             "_" + to_string(children) + ".JSON";
         ifstream f(file_name);
         ofstream o(file_name);
@@ -60,7 +60,7 @@ namespace utils {
     }
 
     inline std::unordered_map<std::string, uint64_t> load_map(unsigned int tree_height, unsigned int children) {
-        std::string file_name = "../../maps/map_" + to_string(tree_height) +
+        std::string file_name = "maps/map_" + to_string(tree_height) +
             "_" + to_string(children) + ".JSON";
         std::ifstream f(file_name);
         nlohmann::json data = nlohmann::json::parse(f);
@@ -85,7 +85,7 @@ namespace utils {
 
     inline void create_tree_file(int h, int q) {
         std::string folder{ DatabaseConstants::FileName };
-        std::string file_name = folder + "WholeTree_" + to_string(h) + "_" + to_string(q) + ".JSON";
+        std::string file_name = "WholeTree_" + to_string(h) + "_" + to_string(q) + ".JSON";
         ifstream f(file_name);
         if (f.good()) {
             cout << "File found - using premade tree!" << endl;

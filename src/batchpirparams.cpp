@@ -110,8 +110,8 @@ std::cout << "+---------------------------------------------------+" << std::end
 }
 
 void BatchPirParams::save_params() {
-    std::filesystem::create_directory("../../params");
-    std::string file_name = "../../params/params_" + to_string(tree_height_) +
+    std::filesystem::create_directory("params");
+    std::string file_name = "params/params_" + to_string(tree_height_) +
         "_" + to_string(children_) + ".txt";
     ofstream file_obj;
     file_obj.open(file_name, ios::in);

@@ -20,11 +20,11 @@ BatchPIRServer::BatchPIRServer(unsigned int tree_height, unsigned int children, 
     balance_buckets();
     std::cout << "BatchPIRServer: Simple hash and balancing completed." << std::endl;
     std::filesystem::path cwd = std::filesystem::current_path();
-    std::filesystem::create_directory("../../PBC_data");
+    std::filesystem::create_directory("PBC_data");
     int nonce_count = 0;
     for (int i = 0; i < buckets_.size(); i++) 
     {
-        std::ofstream file("../../PBC_data/PBC" + to_string(i+1) + "_" + 
+        std::ofstream file("PBC_data/PBC" + to_string(i+1) + "_" + 
             to_string(batchpir_params_->get_tree_height()) + "_" + to_string(children_) + ".json");
         json temp_data;
         for (int j = 0; j < buckets_[i].size(); j++)
@@ -49,10 +49,9 @@ vector<RawDB> BatchPIRServer::get_buckets() {
 
 void BatchPIRServer::populate_raw_db()
 {
-    std::string folder{ batchpir_params_->get_file_name() };
     int tree_height = batchpir_params_->get_tree_height();
     int children_num = children_;
-    std::string file_name = folder + "WholeTree_" + to_string(tree_height) + "_" + to_string(children_num) + ".JSON";
+    std::string file_name = "WholeTree_" + to_string(tree_height) + "_" + to_string(children_num) + ".JSON";
     std::ifstream myFile(file_name);
     if (myFile.fail()) {
        std::cout << "File does not exist" << std::endl;
