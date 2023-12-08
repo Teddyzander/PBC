@@ -60,7 +60,7 @@ Upon running
 ```
 ./build/bin/vectorized_batch_pir server 3 2 100
 ```
-we should expect to see the following on in the terminal:
+we should expect to see the following to be printed to the terminal:
 
 ![image](https://github.com/Teddyzander/PBC/assets/49641102/6493f029-ded2-4988-8cc8-6382495a48de)
 
@@ -71,6 +71,12 @@ Upon running
 we should expect to see the following saved to a text file in the client_console/ folder (which can be read using the ```cat``` command):
 
 ![image](https://github.com/Teddyzander/PBC/assets/49641102/db020f5f-10a4-405c-8d86-9235508c1834)
+
+## Classic Errors
+
+### Unbuilt Server
+
+Running a client prior to building the server will cause a ```nlohmann::json_abi_v3_11_2::detail::parse_error```. This is because the JSON files we need access to do not exists. Check that the server has been build, and double check that the command line arguments for the client match the arguments used to generate the database.
 
 ## Contributors
  - [Muhammad Haris Mughees(Lead)](https://mhmughees.github.io)
