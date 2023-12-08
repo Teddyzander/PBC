@@ -76,7 +76,11 @@ we should expect to see the following saved to a text file in the client_console
 
 ### Unbuilt Server
 
-Running a client prior to building the server will cause a ```nlohmann::json_abi_v3_11_2::detail::parse_error```. This is because the JSON files we need access to do not exists. Check that the server has been build, and double check that the command line arguments for the client match the arguments used to generate the database.
+Running a client prior to building the server will cause a ```nlohmann::json_abi_v3_11_2::detail::parse_error``` error code. This is because the JSON files we need access to do not exists. Check that the server has been build, and double check that the command line arguments for the client match the arguments used to generate the database.
+
+### incorrect arguments
+
+Attempting to execute with innsufficient command line arguments will result in a ```std::logic_error``` error code. There are no default command line arguments - the user must always assert the tree structure and batch numbers.
 
 ## Contributors
  - [Muhammad Haris Mughees(Lead)](https://mhmughees.github.io)
