@@ -84,8 +84,8 @@ namespace utils {
     }
 
     inline void create_tree_file(int h, int q) {
-        std::string folder{ DatabaseConstants::FileName };
-        std::string file_name = "WholeTree_" + to_string(h) + "_" + to_string(q) + ".JSON";
+        std::filesystem::create_directory("treedata");
+        std::string file_name = "treedata/WholeTree_" + to_string(h) + "_" + to_string(q) + ".JSON";
         ifstream f(file_name);
         if (f.good()) {
             cout << "File found - using premade tree!" << endl;

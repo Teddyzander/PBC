@@ -17,9 +17,15 @@ using namespace chrono;
 
 int batchpir_main_server(int argc, const char* argv[])
 {
+
     unsigned int tree_height = stoi(argv[2]);
     unsigned int children = stoi(argv[3]);
     unsigned int num_batches = stoi(argv[4]);
+    // read console output to file
+    std::filesystem::create_directory("server_console");
+    std::string out_name = "server_console/server_" + std::to_string(tree_height) + "_" + std::to_string(children) + ".txt";
+    const char* out = out_name.c_str();
+    freopen(out, "w", stdout);
     const int client_id = 0;
     //  batch size, number of entries, size of entry
     std::vector<std::array<size_t, 3>> input_choices;

@@ -20,6 +20,10 @@ int batchpir_main_client(int argc, const char* argv[])
     unsigned int tree_height = stoi(argv[2]);
     unsigned int children = stoi(argv[3]);
     unsigned int num_batches = stoi(argv[4]);
+    std::filesystem::create_directory("client_console");
+    std::string out_name = "client_console/client_" + std::to_string(tree_height) + "_" + std::to_string(children) + ".txt";
+    const char* out = out_name.c_str();
+    freopen(out, "w", stdout);
     const int client_id = 0;
     //  batch size, number of entries, size of entry
     std::vector<std::array<size_t, 3>> input_choices;
@@ -78,10 +82,8 @@ int batchpir_main_client(int argc, const char* argv[])
             auto hashed_query = batch_client.get_cuckoo_table();
             auto leaves = batch_client.leaves;
             for (int v = 0; v < num_buckets; v++) {
-                if (leaves[v] >= 0) {
-                    myfile << "PBC" + to_string(v) + "_" + to_string(tree_height) + "_" + to_string(children) + ".json; " +
-                        "NodeID: " + to_string(leaves[v]) + "; index: " + to_string(hashed_query[v]) + "\n";
-                }
+                myfile << "PBC" + to_string(v) + "_" + to_string(tree_height) + "_" + to_string(children) + ".json; " +
+                    "NodeID: " + to_string(leaves[v]) + "; index: " + to_string(hashed_query[v] + 1) + "\n";
             }
         }
         catch (std::invalid_argument const&) {

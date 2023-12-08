@@ -51,7 +51,7 @@ void BatchPIRServer::populate_raw_db()
 {
     int tree_height = batchpir_params_->get_tree_height();
     int children_num = children_;
-    std::string file_name = "WholeTree_" + to_string(tree_height) + "_" + to_string(children_num) + ".JSON";
+    std::string file_name = "treedata/WholeTree_" + to_string(tree_height) + "_" + to_string(children_num) + ".JSON";
     std::ifstream myFile(file_name);
     if (myFile.fail()) {
        std::cout << "File does not exist" << std::endl;
