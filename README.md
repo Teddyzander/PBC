@@ -33,6 +33,11 @@ This will run the Vectorized Batch PIR for the three input scenarios mentioned b
 - batch size = h = 3
 - number of requests = n = 100
 
+The structure of the execution and arguments is therefore
+
+```
+./build/bin/vectorized_batch_pir <tree depth> <number of children> <number of requests>
+```
 
 ## Expected Output
 
