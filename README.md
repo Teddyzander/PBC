@@ -6,13 +6,28 @@ The paper detailing the protocol can be found [here](https://ia.cr/2022/1262).
 
 ## Dependencies
 
-This code relies on the [Microsoft SEAL Library](https://github.com/Microsoft/SEAL#citing-microsoft-seal). Make sure to install version 4.1 of this library globally.
+This code relies on the [Microsoft SEAL Library](https://github.com/Microsoft/SEAL#citing-microsoft-seal). Make sure to install version 4.0 of this library globally:
+
+```
+git clone https://github.com/cnquang/SEAL-4.0.0.git
+cd SEAL-4.0.0
+cmake -S . -B build
+cmake --build build
+sudo cmake --install build
+```
 
 ## Compilation
 
 Before proceeding with the compilation, ensure that your system has [CMake](https://cmake.org) installed, preferably a version above 3.0.
 
-After installing CMake and the Microsoft SEAL Library, navigate to the root directory of the project and execute the following commands:
+After installing CMake and the Microsoft SEAL Library, clone the repository and enter the directory: 
+
+```
+git clone https://github.com/Teddyzander/PBC.git
+cd PBC
+```
+
+Execute the following commands to build the executable:
 
 ```
 cmake -S . -B build
