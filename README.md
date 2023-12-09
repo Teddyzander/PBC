@@ -6,6 +6,14 @@ The paper detailing the protocol can be found [here](https://ia.cr/2022/1262).
 
 ## Dependencies
 
+Ensure that your system has [CMake](https://cmake.org) installed, preferably a version above 3.0:
+
+```
+sudo apt install build-essential cmake clang git g++ libssl-dev libgmp3-dev
+sudo apt update
+sudo apt upgrade
+```
+
 This code relies on the [Microsoft SEAL Library](https://github.com/Microsoft/SEAL#citing-microsoft-seal). Make sure to install version 4.0 of this library globally:
 
 ```
@@ -14,14 +22,6 @@ cd SEAL-4.0.0
 cmake -S . -B build
 cmake --build build
 sudo cmake --install build
-```
-
-Ensure that your system has [CMake](https://cmake.org) installed, preferably a version above 3.0:
-
-```
-sudo apt install build-essential cmake clang git g++ libssl-dev libgmp3-dev
-sudo apt update
-sudo apt upgrade
 ```
 
 ## Compilation
