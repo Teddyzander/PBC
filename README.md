@@ -16,9 +16,15 @@ cmake --build build
 sudo cmake --install build
 ```
 
-## Compilation
+Ensure that your system has [CMake](https://cmake.org) installed, preferably a version above 3.0:
 
-Before proceeding with the compilation, ensure that your system has [CMake](https://cmake.org) installed, preferably a version above 3.0.
+```
+sudo apt install build-essential cmake clang git g++ libssl-dev libgmp3-dev
+sudo apt update
+sudo apt upgrade
+```
+
+## Compilation
 
 After installing CMake and the Microsoft SEAL Library, clone the repository and enter the directory: 
 
