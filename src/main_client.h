@@ -81,7 +81,7 @@ int batchpir_main_client(int argc, const char* argv[])
             auto hashed_query = batch_client.get_cuckoo_table();
             auto leaves = batch_client.leaves;
             for (int v = 0; v < num_buckets; v++) {
-                myfile << "PBC" + to_string(v) + "_" + to_string(tree_height) + "_" + to_string(children) + ".json; " +
+                myfile << "PBC" + to_string(v+1) + "_" + to_string(tree_height) + "_" + to_string(children) + ".json; " +
                     "NodeID: " + to_string(leaves[v]) + "; index: " + to_string(hashed_query[v] + 1) + "\n";
             }
         }
