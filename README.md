@@ -14,11 +14,11 @@ sudo apt update
 sudo apt upgrade
 ```
 
-This code relies on the [Microsoft SEAL Library](https://github.com/Microsoft/SEAL#citing-microsoft-seal). Make sure to install version 4.0 of this library globally:
+This code relies on the [Microsoft SEAL Library](https://github.com/Microsoft/SEAL#citing-microsoft-seal). Make sure to install version 4.1 of this library globally:
 
 ```
-git clone https://github.com/cnquang/SEAL-4.0.0.git
-cd SEAL-4.0.0
+git clone https://github.com/microsoft/SEAL.git
+cd SEAL
 cmake -S . -B build
 cmake --build build
 sudo cmake --install build
