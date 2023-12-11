@@ -22,6 +22,7 @@ cd SEAL-4.0.0
 cmake -S . -B build
 cmake --build build
 sudo cmake --install build
+cd ..
 ```
 
 ## Compilation
