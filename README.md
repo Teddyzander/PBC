@@ -9,6 +9,7 @@ The paper detailing the protocol can be found [here](https://ia.cr/2022/1262).
 Ensure that your system has [CMake](https://cmake.org) installed, preferably a version above 3.0:
 
 ```
+sudo apt update
 sudo apt install build-essential cmake clang git g++ libssl-dev libgmp3-dev
 sudo apt update
 sudo apt upgrade
