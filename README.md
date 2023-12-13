@@ -57,7 +57,7 @@ The server must be run before the client, as the client relies on the data gener
 Running:
 
 ```
-./build/bin/vectorized_batch_pir server 3 2 100
+./build/bin/vectorized_batch_pir server 3 2 10
 ```
 
 will generate PBC data for the following conditions:
@@ -66,16 +66,16 @@ will generate PBC data for the following conditions:
 - number of children = q = 2
 - number of nodes = $\sum\limits_{i=1}^{h} q^i$ = 14
 - batch size = h = 3
-- number of requests = n = 100
-- Output printed to console, not to file
+- number of requests = n = 10
+- Output printed to file, not to console
 
 Running:
 
 ```
-./build/bin/vectorized_batch_pir client 3 2 100 True
+./build/bin/vectorized_batch_pir client 3 2 10 True
 ```
 
-Will then create 100 hashed requests for the PBC database. This information will not be printed to the console, but instead will be saved in a text file due to the final command line argument.
+Will then create 10 hashed requests for the PBC database. This information will be printed to console and not saved in a text file due to the final command line argument.
 
 ### Expected Output
 
