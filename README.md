@@ -81,17 +81,17 @@ Will then create 10 hashed requests for the PBC database. This information will 
 
 Upon running 
 ```
-./build/bin/vectorized_batch_pir server 3 2 100
+./build/bin/vectorized_batch_pir server 3 2 10
 ```
-we should expect to see the following to be printed to the terminal:
+we should expect to see the following to be printed to be saved to a text file in /server_console:
 
 ![image](https://github.com/Teddyzander/PBC/assets/49641102/6493f029-ded2-4988-8cc8-6382495a48de)
 
 Upon running 
 ```
-./build/bin/vectorized_batch_pir client 3 2 100 True
+./build/bin/vectorized_batch_pir client 3 2 10 True
 ```
-we should expect to see the following saved to a text file in the client_console/ folder (which can be read using the ```cat``` command):
+we should expect to see the following printed to the console:
 
 ![image](https://github.com/Teddyzander/PBC/assets/49641102/db020f5f-10a4-405c-8d86-9235508c1834)
 
@@ -99,9 +99,9 @@ we should expect to see the following saved to a text file in the client_console
 
 ### Unbuilt Server
 
-Running a client prior to building the server will cause a ```nlohmann::json_abi_v3_11_2::detail::parse_error``` error code. This is because the JSON files we need access to do not exists. Check that the server has been build, and double check that the command line arguments for the client match the arguments used to generate the database.
+Running a client prior to building the server will cause a ```nlohmann::json_abi_v3_11_2::detail::parse_error``` error code. This is because the JSON files we need access to do not exists. Check that the server has been built, and double check that the command line arguments for the client match the arguments used to generate the database.
 
-### incorrect arguments
+### Incorrect Arguments
 
 Attempting to execute with innsufficient command line arguments will result in a ```std::logic_error``` error code. There are no default command line arguments - the user must always assert the tree structure and batch numbers.
 
