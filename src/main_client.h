@@ -20,10 +20,12 @@ int batchpir_main_client(int argc, const char* argv[])
     unsigned int tree_height = stoi(argv[2]);
     unsigned int children = stoi(argv[3]);
     unsigned int num_batches = stoi(argv[4]);
-    std::filesystem::create_directory("client_console");
-    std::string out_name = "client_console/client_" + std::to_string(tree_height) + "_" + std::to_string(children) + ".txt";
-    const char* out = out_name.c_str();
-    FILE* output_file = freopen(out, "w", stdout);
+    if (argc == 6) {
+        std::filesystem::create_directory("client_console");
+        std::string out_name = "client_console/client_" + std::to_string(tree_height) + "_" + std::to_string(children) + ".txt";
+        const char* out = out_name.c_str();
+        FILE* output_file = freopen(out, "w", stdout);
+    }
     const int client_id = 0;
     //  batch size, number of entries, size of entry
     std::vector<std::array<size_t, 3>> input_choices;
