@@ -1,15 +1,15 @@
 #include "main_client.h"
 #include "main_server.h"
 
-//const char* defaults[] = {"File", "client", "5" , "3", "10"};
+const char* defaults[] = {"File", "server", "10" , "2", "10"};
 
 int main(int argc, const char* argv[])
 {
-    /*
+    
     //For testing
     if (argc == 1) {
         argv = defaults;
-    }*/
+    }
     
 
     std::string call = argv[1];

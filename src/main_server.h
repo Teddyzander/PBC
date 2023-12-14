@@ -89,7 +89,7 @@ int batchpir_main_server(int argc, const char* argv[])
         cout << "Entry Size: " << input_choices[i][2] << endl;
 
         cout << "Tree Initialization time: " << init_times[i].count() << " milliseconds" << endl;
-        cout << "PBC database Hashing time: " << database_times[i].count() << " milliseconds" << endl;
+        cout << "PBC database total time: " << database_times[i].count() << " milliseconds" << endl;
         cout << "Database Size: " << batch_server.database_size << " bytes" << endl;
         cout << "Map Size: " << cap << " bytes" << endl;
         float ratio = (float)cap / (float)batch_server.database_size;

@@ -19,15 +19,15 @@
 typedef  std::vector<seal::Ciphertext> PIRQuery;
 typedef  seal::Ciphertext PIRResponse;
 typedef  std::vector<seal::Ciphertext> PIRResponseList;
-typedef  std::vector<std::vector<unsigned char>>  RawDB;
+typedef  std::vector<std::string>  RawDB;
 typedef  std::vector<std::vector<unsigned char>>  RawResponses;
 typedef  std::vector<uint64_t> Row;
 typedef  std::vector<Row> PirDB;
 using namespace std;
 using namespace seal;
 // comment out below "using" if using linux
-//using __uint128_t = _Unsigned128;
-//using uint128_t = _Unsigned128;
+using __uint128_t = _Unsigned128;
+using uint128_t = _Unsigned128;
 
 namespace utils {
 
@@ -78,7 +78,7 @@ namespace utils {
         int temp_size = query.size();
         for (int i = 0; i < temp_size; i++)
             if (query[i] < buckets[i].size()) {
-                 request.push_back(buckets[i][query[i]]);
+                 //request.push_back(buckets[i][query[i]]);
             }
         return request;
     }

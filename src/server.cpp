@@ -74,7 +74,7 @@ void Server::populate_raw_db()
     };
 
     // Populate the rawdb_ vector with entries
-    for (size_t i = 0; i < rounded_db_entries; ++i)
+    /*for (size_t i = 0; i < rounded_db_entries; ++i)
     {
         if (i < db_entries)
         {
@@ -84,7 +84,7 @@ void Server::populate_raw_db()
         {
             rawdb_[i] = generate_one_entry();
         }
-    }
+    }*/
 }
 
 ///   data functions to be used with bathcpir server
@@ -110,7 +110,7 @@ void Server::round_db(RawDB &db)
 
     for (int i = 0; i < (rounded_db_entries - db_entries); i++)
     {
-        db.push_back(generate_one_entry());
+        //db.push_back(generate_one_entry());
     }
 }
 
@@ -151,7 +151,7 @@ RawDB Server::populate_return_raw_db()
     };
 
     // Populate the rawdb vector with entries
-    for (size_t i = 0; i < rounded_db_entries; ++i)
+    /*for (size_t i = 0; i < rounded_db_entries; ++i)
     {
         if (i < db_entries)
         {
@@ -161,7 +161,7 @@ RawDB Server::populate_return_raw_db()
         {
             rawdb[i] = generate_one_entry();
         }
-    }
+    }*/
 
     return rawdb;
 }
@@ -278,7 +278,7 @@ PirDB Server::convert_to_pir_db(int rawdb_index)
     for (int i = 0; i < total_rawdb_entries; ++i)
     {
         // cout  <<  "total_rawdb_entries: " << i << endl;
-        auto coeffs = convert_to_list_of_coeff(rawdb_list_[rawdb_index][i]);
+        //auto coeffs = convert_to_list_of_coeff(rawdb_list_[rawdb_index][i]);
 
         int plaintext_idx = i / pir_dimensions_[0];
         const int slot = (i * gap_) % row_size_;
@@ -297,7 +297,7 @@ PirDB Server::convert_to_pir_db(int rawdb_index)
                 std::cout << "stop" << std::endl;
             }
             
-            db[plaintext_idx][slot] = coeffs[j];
+            //db[plaintext_idx][slot] = coeffs[j];
             plaintext_idx += plaintexts_per_chunk;
         }
     }
@@ -323,7 +323,7 @@ void Server::transform_into_pir_db()
     // Populate database
     for (int i = 0; i < total_rawdb_entries; ++i)
     {
-        auto coeffs = convert_to_list_of_coeff(rawdb_[i]);
+        //auto coeffs = convert_to_list_of_coeff(rawdb_[i]);
 
         int plaintext_idx = i / pir_dimensions_[0];
         const int slot = (i * gap_) % row_size_;
@@ -338,7 +338,7 @@ void Server::transform_into_pir_db()
                           << ", slot = " << slot << std::endl;
                 return;
             }
-            db_[plaintext_idx][slot] = coeffs[j];
+            //db_[plaintext_idx][slot] = coeffs[j];
             plaintext_idx += plaintexts_per_chunk;
         }
     }

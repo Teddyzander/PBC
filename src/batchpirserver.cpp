@@ -2,7 +2,9 @@
 #include "header/read_json.hpp"
 #include <fstream>
 #include <filesystem>
+#include <chrono>
 
+using namespace chrono;
 using json = nlohmann::ordered_json;
 
 BatchPIRServer::BatchPIRServer(unsigned int tree_height, unsigned int children, BatchPirParams &batchpir_params)
@@ -13,15 +15,31 @@ BatchPIRServer::BatchPIRServer(unsigned int tree_height, unsigned int children, 
     is_client_keys_set_ = false;
     is_simple_hash_ = false;
     std::cout << "BatchPIRServer: Populating raw database..." << std::endl;
+    auto start = high_resolution_clock::now();
     populate_raw_db();
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(end - start);
     std::cout << "BatchPIRServer: Raw database populated." << std::endl;
-    std::cout << "BatchPIRServer: Performing simple hash and bucket balancing..." << std::endl;
+    std::cout << "BatchPIRServer: Time Taken - " << duration.count() << " milliseconds" << std::endl;
+    std::cout << "BatchPIRServer: Performing cuckoo hash..." << std::endl;
+    start = high_resolution_clock::now();
     simeple_hash();
+    end = high_resolution_clock::now();
+    duration = duration_cast<milliseconds>(end - start);
+    std::cout << "BatchPIRServer: Cuckoo hash complete." << std::endl;
+    std::cout << "BatchPIRServer: Time Taken - " << duration.count() << " milliseconds" << std::endl;
+    std::cout << "BatchPIRServer: Performing bucket balancing..." << std::endl;
+    start = high_resolution_clock::now();
     balance_buckets();
-    std::cout << "BatchPIRServer: Simple hash and balancing completed." << std::endl;
+    end = high_resolution_clock::now();
+    duration = duration_cast<milliseconds>(end - start);
+    std::cout << "BatchPIRServer: Bucket balancing complete." << std::endl;
+    std::cout << "BatchPIRServer: Time Taken - " << duration.count() << " milliseconds" << std::endl;
     std::filesystem::path cwd = std::filesystem::current_path();
     std::filesystem::create_directory("PBC_data");
     int nonce_count = 0;
+    std::cout << "BatchPIRServer: Saving buckets..." << std::endl;
+    start = high_resolution_clock::now();
     for (int i = 0; i < buckets_.size(); i++) 
     {
         std::ofstream file("PBC_data/PBC" + to_string(i+1) + "_" + 
@@ -41,6 +59,10 @@ BatchPIRServer::BatchPIRServer(unsigned int tree_height, unsigned int children, 
         file << temp_data;
         file.close();
     };
+    end = high_resolution_clock::now();
+    duration = duration_cast<milliseconds>(end - start);
+    std::cout << "BatchPIRServer: Buckets saved." << std::endl;
+    std::cout << "BatchPIRServer: Time Taken - " << duration.count() << " milliseconds" << std::endl;
 }
 
 vector<RawDB> BatchPIRServer::get_buckets() {
@@ -62,28 +84,16 @@ void BatchPIRServer::populate_raw_db()
 
     // Resize the rawdb vector to the correct size
     rawdb_.resize(db_entries);
-    
-    // Define a function to generate a random entry
-    auto generate_random_entry = [entry_size]() -> std::vector<unsigned char>
-    {
-        std::vector<unsigned char> entry(entry_size);
-        std::generate(entry.begin(), entry.end(), []()
-                      {
-                          return rand() % 0xFF;
-                          // return 1;
-                      });
-        return entry;
-    };
+    std::map<std::string, std::string> temp_map = data;
 
+    int db_index = 0;
     // Populate the rawdb vector with entries
     auto start = chrono::high_resolution_clock::now();
-    for (size_t i = 0; i < db_entries; ++i)
+    for (const auto& p : temp_map)
     {
-        std::string temp_string = data[to_string(i + 2)];
-        std::vector<unsigned char> temp_char;
-        temp_char.insert(temp_char.begin(), temp_string.begin(), temp_string.end());
-        rawdb_[i] = temp_char;
+        rawdb_[stoi(p.first) - 2] = p.second;
     }
+    
     auto end = chrono::high_resolution_clock::now();
     timer = chrono::duration_cast<chrono::milliseconds>(end - start);
     database_size = sizeof(rawdb_) + (32 * rawdb_.size());
@@ -143,7 +153,7 @@ void BatchPIRServer::simeple_hash()
         {
             buckets_[b].push_back(rawdb_[i]);
             map_[to_string(i+2) + to_string(b)] = buckets_[b].size() - 1;
-            raw_map_[to_string(b) + to_string(buckets_[b].size() - 1)] = i;
+            // raw_map_[to_string(b) + to_string(buckets_[b].size() - 1)] = i;
         }
     }
 
@@ -188,7 +198,7 @@ void BatchPIRServer::balance_buckets()
     auto num_buckets = buckets_.size();
     auto entry_size = batchpir_params_->get_entry_size();
 
-    std::vector<unsigned char> entry;
+    std::string entry;
     unsigned char element = '0';
     for (int i = 0; i < 64; i++) {
         entry.push_back(element);

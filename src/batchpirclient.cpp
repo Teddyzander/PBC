@@ -244,57 +244,6 @@ void BatchPIRClient::prepare_pir_clients()
     }
 }
 
-vector<RawDB> BatchPIRClient::decode_responses(vector<PIRResponseList> responses)
-{
-    vector<std::vector<std::vector<unsigned char>>> entries_list;
-    for (int i = 0; i < responses.size(); i++)
-    {
-        std::vector<std::vector<unsigned char>> entries = client_list_[i].decode_responses(responses[i]);
-        entries_list.push_back(entries);
-    }
-    return entries_list;
-}
-
-vector<RawDB> BatchPIRClient::decode_responses_chunks(PIRResponseList responses)
-{
-    vector<std::vector<std::vector<unsigned char>>> entries_list;
-    const size_t num_slots_per_entry = batchpir_params_.get_num_slots_per_entry();
-    const size_t num_slots_per_entry_rounded = utils::next_power_of_two(num_slots_per_entry);
-    const size_t max_empty_slots = batchpir_params_.get_first_dimension_size();
-    const size_t row_size = batchpir_params_.get_seal_parameters().poly_modulus_degree() / 2;
-    const size_t gap = row_size / max_empty_slots;
-
-    measure_size(responses, 1);
-
-    auto current_fill = gap * num_slots_per_entry_rounded;
-    size_t num_buckets_merged = (row_size / current_fill);
-
-    if (ceil(num_slots_per_entry * 1.0 / max_empty_slots) > 1 || num_buckets_merged <= 1 || client_list_.size() == 1)
-    {
-
-        size_t num_chunk_ctx = ceil((num_slots_per_entry * 1.0) / max_empty_slots);
-
-        for (int i = 0; i < client_list_.size(); i++)
-        {
-            auto start_idx = (i * num_chunk_ctx);
-            PIRResponseList subvector(responses.begin() + start_idx, responses.begin() + start_idx + num_chunk_ctx);
-            std::vector<std::vector<unsigned char>> entries = client_list_[i].decode_responses(subvector);
-            entries_list.push_back(entries);
-        }
-    }
-    else
-    {
-        vector<vector<uint64_t>> entry_slot_lists;
-        for (int i = 0; i < client_list_.size(); i++)
-        {
-            entry_slot_lists.push_back(client_list_[i].get_entry_list());
-        }
-
-        entries_list = client_list_[0].decode_merged_responses(responses, cuckoo_table_.size(), entry_slot_lists);
-    }
-    return entries_list;
-}
-
 std::pair<seal::GaloisKeys, seal::RelinKeys> BatchPIRClient::get_public_keys()
 {
     std::pair<seal::GaloisKeys, seal::RelinKeys> keys;
