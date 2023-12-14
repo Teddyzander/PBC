@@ -62,8 +62,12 @@ int batchpir_main_server(int argc, const char* argv[])
     auto encryption_params = utils::create_encryption_parameters(selection);
     BatchPirParams params(choice[0], choice[1], choice[2], tree_height, children, encryption_params);
 
+    auto start = chrono::high_resolution_clock::now();
     BatchPIRServer batch_server(tree_height, children, params);
-    database_times.push_back(batch_server.timer);
+    auto end = chrono::high_resolution_clock::now();
+    auto duration_pbc = chrono::duration_cast<chrono::milliseconds>(end - start);
+    database_times.push_back(duration_pbc);
+    std::cout << "test_timer: " << batch_server.timer.count() << std::endl;
 
     params.save_params();
     
