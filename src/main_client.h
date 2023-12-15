@@ -76,12 +76,18 @@ int batchpir_main_client(int argc, const char* argv[])
     auto start = chrono::high_resolution_clock::now();
     auto end = chrono::high_resolution_clock::now();
     auto duration_querygen = chrono::duration_cast<chrono::milliseconds>(end - start);
+    auto start_map = chrono::high_resolution_clock::now();
+    auto end_map = chrono::high_resolution_clock::now();
+    auto total_map = chrono::duration_cast<chrono::milliseconds>(end_map - start_map);
     for (int i = 0; i < num_batches; i++) {
         try {
             BatchPIRClient batch_client(tree_height, children, params);
-            start = chrono::high_resolution_clock::now();
+            start_map = chrono::high_resolution_clock::now();
             batch_client.set_map(hash_map);
+            end_map = chrono::high_resolution_clock::now();
+            total_map += chrono::duration_cast<chrono::milliseconds>(end_map - start_map);
             vector<uint64_t> entry_indices = generate_batch(tree_height, children, upper, lower);
+            start = chrono::high_resolution_clock::now();
             auto queries = batch_client.create_queries(entry_indices);
             auto hashed_query = batch_client.get_cuckoo_table();
             auto leaves = batch_client.leaves;
@@ -112,6 +118,7 @@ int batchpir_main_client(int argc, const char* argv[])
         cout << "Number of Entries: " << input_choices[i][1] << ", ";
         cout << "Entry Size: " << input_choices[i][2] << endl;
         cout << "Average Indexing time: " << query_gen_times[i].count() / num_batches << " milliseconds" << endl;
+        cout << "Average Map handover time: " << total_map.count() / num_batches << " milliseconds" << endl;
         cout << "Rate of failure: " << fails / num_batches << " %" << endl;
     }
 
