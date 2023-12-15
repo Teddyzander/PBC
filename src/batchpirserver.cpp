@@ -84,7 +84,7 @@ void BatchPIRServer::populate_raw_db()
     myFile >> data;
     auto end_test = chrono::high_resolution_clock::now();
     auto test_timer = chrono::duration_cast<chrono::milliseconds>(end_test - start_test);
-    std::cout << "TEST: " << test_timer.count() << std::endl;
+    std::cout << "Time taken to parse JSON: " << test_timer.count() << std::endl;
     auto db_entries = batchpir_params_->get_num_entries();
     auto entry_size = batchpir_params_->get_entry_size();
 
