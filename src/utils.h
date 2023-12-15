@@ -92,7 +92,7 @@ namespace utils {
         }
 
         else {
-            nlohmann::ordered_json tree;
+            std::string tree = "{";
             long unsigned int num_nodes = 0;
             for (int i = 1; i <= h; i++) {
                 num_nodes += pow(q, i);
@@ -105,9 +105,11 @@ namespace utils {
                 {
                     str = str + hex_characters[rand() % 16];
                 }
-    
-                tree[to_string(i)] = str;
+
+                tree += "\"" + to_string(i) + "\":\"" + str + "\",";
             }
+            tree.erase(tree.size() - 1);
+            tree += "}";
             ofstream o(file_name);
             o << tree << std::endl;
         }
