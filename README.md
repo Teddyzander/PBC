@@ -67,7 +67,9 @@ will generate PBC data for the following conditions:
 - number of nodes = $\sum\limits_{i=1}^{h} q^i$ = 14
 - batch size = h = 3
 - number of requests = n = 10
-- Output printed to file, not to console
+- Output printed to console, not to file
+
+![image](https://github.com/Teddyzander/PBC/assets/49641102/6493f029-ded2-4988-8cc8-6382495a48de)
 
 Running:
 
@@ -75,23 +77,7 @@ Running:
 ./build/bin/vectorized_batch_pir client 3 2 10 True
 ```
 
-Will then create 10 hashed requests for the PBC database. This information will be printed to console and not saved in a text file due to the final command line argument.
-
-### Expected Output
-
-Upon running 
-```
-./build/bin/vectorized_batch_pir server 3 2 10
-```
-we should expect to see the following to be printed to be saved to a text file in /server_console:
-
-![image](https://github.com/Teddyzander/PBC/assets/49641102/6493f029-ded2-4988-8cc8-6382495a48de)
-
-Upon running 
-```
-./build/bin/vectorized_batch_pir client 3 2 10 True
-```
-we should expect to see the following printed to the console:
+Will then create 10 hashed requests for the PBC database. This information will be saved to a file and not printed to the console.
 
 ![image](https://github.com/Teddyzander/PBC/assets/49641102/db020f5f-10a4-405c-8d86-9235508c1834)
 
