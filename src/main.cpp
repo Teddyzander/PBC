@@ -1,7 +1,7 @@
 #include "main_client.h"
 #include "main_server.h"
 
-//const char* defaults[] = {"File", "server", "10" , "2", "10"};
+// const char* defaults[] = {"File", "server", "10" , "2", "10"};
 
 int main(int argc, const char* argv[])
 {

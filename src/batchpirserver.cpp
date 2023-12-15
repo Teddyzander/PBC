@@ -19,7 +19,7 @@ BatchPIRServer::BatchPIRServer(unsigned int tree_height, unsigned int children, 
     populate_raw_db();
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(end - start);
-    std::cout << "BatchPIRServer: Raw database populated." << std::endl;
+    std::cout << "BatchPIRServer: Raw database populated - ";
     std::cout << duration.count() << " milliseconds" << std::endl;
     std::cout << "BatchPIRServer: Performing cuckoo hash..." << std::endl;
     start = high_resolution_clock::now();
@@ -33,7 +33,7 @@ BatchPIRServer::BatchPIRServer(unsigned int tree_height, unsigned int children, 
     balance_buckets();
     end = high_resolution_clock::now();
     duration = duration_cast<milliseconds>(end - start);
-    std::cout << "BatchPIRServer: Bucket balancing complete -";
+    std::cout << "BatchPIRServer: Bucket balancing complete - ";
     std::cout << duration.count() << " milliseconds" << std::endl;
     std::filesystem::path cwd = std::filesystem::current_path();
     std::filesystem::create_directory("PBC_data");
@@ -73,35 +73,43 @@ void BatchPIRServer::populate_raw_db()
 {
     int tree_height = batchpir_params_->get_tree_height();
     int children_num = children_;
+    auto db_entries = batchpir_params_->get_num_entries();
+    auto entry_size = batchpir_params_->get_entry_size();
     std::string file_name = "treedata/WholeTree_" + to_string(tree_height) + "_" + to_string(children_num) + ".JSON";
     std::ifstream myFile(file_name);
     if (myFile.fail()) {
        std::cout << "File does not exist" << std::endl;
     }
-    
-    auto start_test = chrono::high_resolution_clock::now();
-    json data = json::parse(myFile);
-    auto end_test = chrono::high_resolution_clock::now();
-    auto test_timer = chrono::duration_cast<chrono::milliseconds>(end_test - start_test);
-    std::cout << "Time taken to parse JSON: " << test_timer.count() << std::endl;
-    auto db_entries = batchpir_params_->get_num_entries();
-    auto entry_size = batchpir_params_->get_entry_size();
 
-    // Resize the rawdb vector to the correct size
+    std::vector<std::string> seglist;
     rawdb_.resize(db_entries);
-    std::map<std::string, std::string> temp_map = data;
-
-    int db_index = 0;
-    // Populate the rawdb vector with entries
-    auto start = chrono::high_resolution_clock::now();
-    for (const auto& p : temp_map)
-    {
-        rawdb_[stoi(p.first) - 2] = p.second;
+    if (myFile.is_open()) { //checking whether the file is open
+        string tp;
+        while (getline(myFile, tp)) { //read data from file object and put it into string.
+            tp.erase(0, 1);
+            tp.erase(tp.size() - 1);
+            stringstream ss1(tp);
+            std::string segment1;
+            std::string segment2;
+            int i = 0;
+            while (getline(ss1, segment1, ','))
+            {
+                stringstream ss2(segment1);
+                int k = 0;
+                while (getline(ss2, segment2, ':')) {
+                    if (k != 0) {
+                        segment2.erase(0, 1);
+                        segment2.erase(segment2.size() - 1);
+                        rawdb_[i] = segment2;
+                        i++;
+                    }
+                    k++;
+                }
+            }
+        }
+        myFile.close(); //close the file object.
     }
-    
-    auto end = chrono::high_resolution_clock::now();
-    timer = chrono::duration_cast<chrono::milliseconds>(end - start);
-    std::cout << "Time taken to fill database: " << timer.count() << std::endl;
+
     database_size = sizeof(rawdb_) + (32 * rawdb_.size());
 }
 
