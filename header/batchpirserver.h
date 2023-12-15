@@ -21,6 +21,7 @@ public:
     unsigned long int database_size;
     unsigned int tree_height_;
     unsigned int children_;
+    void wipe_data();
    
 
     
