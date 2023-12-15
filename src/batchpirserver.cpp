@@ -56,10 +56,10 @@ BatchPIRServer::BatchPIRServer(unsigned int tree_height, unsigned int children, 
             }
             current_bucket += "\"" + label + "\":" + "\"" + str + "\"";
             if (j < buckets_[i].size() - 1) {
-                current_bucket += ',';
+                current_bucket += ",";
             }
             else {
-                current_bucket += '}]';
+                current_bucket += "}]";
             }
         }
         file << current_bucket;
