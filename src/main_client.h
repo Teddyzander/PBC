@@ -74,14 +74,19 @@ int batchpir_main_client(int argc, const char* argv[])
     unsigned int num_buckets = ceil(DatabaseConstants::CuckooFactor * tree_height);
     auto hash_map = utils::load_map(tree_height, children);
     auto start = chrono::high_resolution_clock::now();
+    auto end = chrono::high_resolution_clock::now();
+    auto duration_querygen = chrono::duration_cast<chrono::milliseconds>(end - start);
     for (int i = 0; i < num_batches; i++) {
         try {
             BatchPIRClient batch_client(tree_height, children, params);
+            start = chrono::high_resolution_clock::now();
             batch_client.set_map(hash_map);
             vector<uint64_t> entry_indices = generate_batch(tree_height, children, upper, lower);
             auto queries = batch_client.create_queries(entry_indices);
             auto hashed_query = batch_client.get_cuckoo_table();
             auto leaves = batch_client.leaves;
+            end = chrono::high_resolution_clock::now();
+            duration_querygen += chrono::duration_cast<chrono::milliseconds>(end - start);
             for (int v = 0; v < num_buckets; v++) {
                 myfile << "PBC" + to_string(v+1) + "_" + to_string(tree_height) + "_" + to_string(children) + ".json; " +
                     "NodeID: " + to_string(leaves[v]) + "; index: " + to_string(hashed_query[v] + 1) + "\n";
@@ -93,8 +98,6 @@ int batchpir_main_client(int argc, const char* argv[])
         myfile << "\n";
         // auto request = return_request(buckets, hashed_query);
     }
-    auto end = chrono::high_resolution_clock::now();
-    auto duration_querygen = chrono::duration_cast<chrono::milliseconds>(end - start);
     query_gen_times.push_back(duration_querygen);
     cout << "Main: Query generation complete for example." << endl;
     cout << endl;

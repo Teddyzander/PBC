@@ -76,12 +76,8 @@ int batchpir_main_server(int argc, const char* argv[])
     size_t max_bucket_size = params.get_max_bucket_size();
     utils::save_bucket_size(max_bucket_size, tree_height, children);
     utils::save_map(hash_map, tree_height, children);
-    unsigned long cap = sizeof(hash_map);
     cout << "Calculating Map Size..." << endl;
-    for (std::unordered_map<std::string, uint64_t>::const_iterator it = hash_map.begin(); it != hash_map.end(); ++it) {
-        cap += it->first.capacity();
-        cap += 32;
-    }
+    unsigned long cap = (hash_map.begin()->first.capacity() + 32) * hash_map.size() + sizeof(hash_map);
 
     cout << "***********************" << endl;
     cout << "     Timings Report    " << endl;
