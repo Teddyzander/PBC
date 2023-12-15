@@ -69,7 +69,6 @@ int batchpir_main_server(int argc, const char* argv[])
     end = chrono::high_resolution_clock::now();
     auto duration_pbc = chrono::duration_cast<chrono::milliseconds>(end - start);
     database_times.push_back(duration_pbc);
-    std::cout << "Time taken for hashing: " << batch_server.timer.count() << std::endl;
 
     params.save_params();
     

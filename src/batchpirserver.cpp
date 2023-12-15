@@ -20,21 +20,21 @@ BatchPIRServer::BatchPIRServer(unsigned int tree_height, unsigned int children, 
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<milliseconds>(end - start);
     std::cout << "BatchPIRServer: Raw database populated." << std::endl;
-    std::cout << "BatchPIRServer: Time Taken - " << duration.count() << " milliseconds" << std::endl;
+    std::cout << duration.count() << " milliseconds" << std::endl;
     std::cout << "BatchPIRServer: Performing cuckoo hash..." << std::endl;
     start = high_resolution_clock::now();
     simeple_hash();
     end = high_resolution_clock::now();
     duration = duration_cast<milliseconds>(end - start);
-    std::cout << "BatchPIRServer: Cuckoo hash complete." << std::endl;
-    std::cout << "BatchPIRServer: Time Taken - " << duration.count() << " milliseconds" << std::endl;
+    std::cout << "BatchPIRServer: Cuckoo hash complete - ";
+    std::cout << duration.count() << " milliseconds" << std::endl;
     std::cout << "BatchPIRServer: Performing bucket balancing..." << std::endl;
     start = high_resolution_clock::now();
     balance_buckets();
     end = high_resolution_clock::now();
     duration = duration_cast<milliseconds>(end - start);
-    std::cout << "BatchPIRServer: Bucket balancing complete." << std::endl;
-    std::cout << "BatchPIRServer: Time Taken - " << duration.count() << " milliseconds" << std::endl;
+    std::cout << "BatchPIRServer: Bucket balancing complete -";
+    std::cout << duration.count() << " milliseconds" << std::endl;
     std::filesystem::path cwd = std::filesystem::current_path();
     std::filesystem::create_directory("PBC_data");
     int nonce_count = 0;
@@ -61,8 +61,8 @@ BatchPIRServer::BatchPIRServer(unsigned int tree_height, unsigned int children, 
     };
     end = high_resolution_clock::now();
     duration = duration_cast<milliseconds>(end - start);
-    std::cout << "BatchPIRServer: Buckets saved." << std::endl;
-    std::cout << "BatchPIRServer: Time Taken - " << duration.count() << " milliseconds" << std::endl;
+    std::cout << "BatchPIRServer: Buckets saved - ";
+    std::cout << duration.count() << " milliseconds" << std::endl;
 }
 
 vector<RawDB> BatchPIRServer::get_buckets() {
@@ -101,7 +101,8 @@ void BatchPIRServer::populate_raw_db()
     
     auto end = chrono::high_resolution_clock::now();
     timer = chrono::duration_cast<chrono::milliseconds>(end - start);
-    //database_size = sizeof(rawdb_) + (32 * rawdb_.size());
+    std::cout << "Time taken to fill database: " << timer.count() << std::endl;
+    database_size = sizeof(rawdb_) + (32 * rawdb_.size());
 }
 
 std::unordered_map<std::string, uint64_t> BatchPIRServer::get_hash_map() const
