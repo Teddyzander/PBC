@@ -12,7 +12,6 @@ int main(int argc, const char* argv[])
         argv = defaults;
     }
     */
-
     std::string call = argv[1];
     if (call == "server") {
         batchpir_main_server(argc, argv);

@@ -78,7 +78,13 @@ void BatchPIRServer::populate_raw_db()
     if (myFile.fail()) {
        std::cout << "File does not exist" << std::endl;
     }
-    json data = json::parse(myFile);
+    
+    auto start_test = chrono::high_resolution_clock::now();
+    json data;
+    myFile >> data;
+    auto end_test = chrono::high_resolution_clock::now();
+    auto test_timer = chrono::duration_cast<chrono::milliseconds>(end_test - start_test);
+    std::cout << "TEST: " << test_timer.count() << std::endl;
     auto db_entries = batchpir_params_->get_num_entries();
     auto entry_size = batchpir_params_->get_entry_size();
 
@@ -96,7 +102,7 @@ void BatchPIRServer::populate_raw_db()
     
     auto end = chrono::high_resolution_clock::now();
     timer = chrono::duration_cast<chrono::milliseconds>(end - start);
-    database_size = sizeof(rawdb_) + (32 * rawdb_.size());
+    //database_size = sizeof(rawdb_) + (32 * rawdb_.size());
 }
 
 std::unordered_map<std::string, uint64_t> BatchPIRServer::get_hash_map() const
