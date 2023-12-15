@@ -80,7 +80,7 @@ void BatchPIRServer::populate_raw_db()
     }
     
     auto start_test = chrono::high_resolution_clock::now();
-    json data;
+    json data = json::parse(myFile);
     myFile >> data;
     auto end_test = chrono::high_resolution_clock::now();
     auto test_timer = chrono::duration_cast<chrono::milliseconds>(end_test - start_test);
