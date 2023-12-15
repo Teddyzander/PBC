@@ -65,7 +65,7 @@ int batchpir_main_client(int argc, const char* argv[])
     }
     upper = upper;
     lower = lower + 1;
-    cout << "Main: Starting query generation and information retrieval for " + to_string(num_batches) + " iterations..." << endl;
+    std::cout << "Main: Starting query generation and information retrieval for " + to_string(num_batches) + " iterations..." << endl;
     int fails = 0;
     std::filesystem::create_directory("requests");
     std::ofstream myfile;
@@ -79,6 +79,7 @@ int batchpir_main_client(int argc, const char* argv[])
     auto start_map = chrono::high_resolution_clock::now();
     auto end_map = chrono::high_resolution_clock::now();
     auto total_map = chrono::duration_cast<chrono::milliseconds>(end_map - start_map);
+    std::string file_output = "";
     for (int i = 0; i < num_batches; i++) {
         try {
             BatchPIRClient batch_client(tree_height, children, params);
@@ -94,32 +95,34 @@ int batchpir_main_client(int argc, const char* argv[])
             end = chrono::high_resolution_clock::now();
             duration_querygen += chrono::duration_cast<chrono::milliseconds>(end - start);
             for (int v = 0; v < num_buckets; v++) {
-                myfile << "PBC" + to_string(v+1) + "_" + to_string(tree_height) + "_" + to_string(children) + ".json; " +
+                file_output = file_output + "PBC" + to_string(v + 1) + "_" + to_string(tree_height) + "_" + to_string(children) + ".json; " +
                     "NodeID: " + to_string(leaves[v]) + "; index: " + to_string(hashed_query[v] + 1) + "\n";
             }
         }
         catch (std::invalid_argument const&) {
             fails++;
         }
-        myfile << "\n";
+        file_output = file_output + "\n";
         // auto request = return_request(buckets, hashed_query);
     }
+    myfile << file_output;
+    myfile.close();
     query_gen_times.push_back(duration_querygen);
-    cout << "Main: Query generation complete for example." << endl;
-    cout << endl;
+    std::cout << "Main: Query generation complete for example." << endl;
+    std::cout << endl;
 
-    cout << "***********************" << endl;
-    cout << "     Timings Report    " << endl;
-    cout << "***********************" << endl;
+    std::cout << "***********************" << endl;
+    std::cout << "     Timings Report    " << endl;
+    std::cout << "***********************" << endl;
     for (size_t i = 0; i < input_choices.size(); ++i)
     {
-        cout << "Input Parameters: ";
-        cout << "Batch Length: " << tree_height << ", ";
-        cout << "Number of Entries: " << input_choices[i][1] << ", ";
-        cout << "Entry Size: " << input_choices[i][2] << endl;
-        cout << "Average Indexing time: " << query_gen_times[i].count() / num_batches << " milliseconds" << endl;
-        cout << "Average Map handover time: " << total_map.count() / num_batches << " milliseconds" << endl;
-        cout << "Rate of failure: " << fails / num_batches << " %" << endl;
+        std::cout << "Input Parameters: ";
+        std::cout << "Batch Length: " << tree_height << ", ";
+        std::cout << "Number of Entries: " << input_choices[i][1] << ", ";
+        std::cout << "Entry Size: " << input_choices[i][2] << endl;
+        std::cout << "Average Indexing time: " << query_gen_times[i].count() / num_batches << " milliseconds" << endl;
+        std::cout << "Average Map handover time: " << total_map.count() / num_batches << " milliseconds" << endl;
+        std::cout << "Rate of failure: " << fails / num_batches << " %" << endl;
     }
 
     return 0;

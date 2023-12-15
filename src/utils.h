@@ -26,8 +26,8 @@ typedef  std::vector<Row> PirDB;
 using namespace std;
 using namespace seal;
 // comment out below "using" if using linux
-// using __uint128_t = _Unsigned128;
-// using uint128_t = _Unsigned128;
+using __uint128_t = _Unsigned128;
+using uint128_t = _Unsigned128;
 
 namespace utils {
 
@@ -51,21 +51,27 @@ namespace utils {
 
     inline void save_map(std::unordered_map<std::string, uint64_t> map, unsigned int tree_height, unsigned int children) {
         std::filesystem::create_directory("maps");
-        nlohmann::json j_map(map);
         std::string file_name = "maps/map_" + to_string(tree_height) +
             "_" + to_string(children) + ".JSON";
-        ifstream f(file_name);
         ofstream o(file_name);
-        o << j_map << std::endl;
+        for (const auto& pair : map) {
+            o << pair.first << ' ' << pair.second << '\n';
+        }
+        o.close();
     }
 
     inline std::unordered_map<std::string, uint64_t> load_map(unsigned int tree_height, unsigned int children) {
+        std::unordered_map<std::string, uint64_t> loadedData;
         std::string file_name = "maps/map_" + to_string(tree_height) +
             "_" + to_string(children) + ".JSON";
         std::ifstream f(file_name);
-        nlohmann::json data = nlohmann::json::parse(f);
-        std::unordered_map<std::string, uint64_t> map = data.get<std::unordered_map<std::string, uint64_t>>();
-        return map;
+        std::string key;
+        uint64_t value;
+        while (f >> key >> value) {
+            loadedData[key] = value;
+        }
+        f.close();
+        return loadedData;
     }
 
     // Returns the next power of 2 for a given number
