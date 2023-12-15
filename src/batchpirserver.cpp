@@ -44,7 +44,7 @@ BatchPIRServer::BatchPIRServer(unsigned int tree_height, unsigned int children, 
     {
         std::ofstream file("PBC_data/PBC" + to_string(i+1) + "_" + 
             to_string(batchpir_params_->get_tree_height()) + "_" + to_string(children_) + ".json");
-        json temp_data;
+        std::string current_bucket = "{";
         for (int j = 0; j < buckets_[i].size(); j++)
         {
             std::string str(buckets_[i][j].begin(), buckets_[i][j].end());
@@ -54,9 +54,15 @@ BatchPIRServer::BatchPIRServer(unsigned int tree_height, unsigned int children, 
                 label = to_string(rawdb_.size() + 2 + nonce_count);
                 nonce_count++;
             }
-            temp_data[label] = str;
+            current_bucket += "\"" + label + "\":" + "\"" + str + "\"";
+            if (j < buckets_[i].size() - 1) {
+                current_bucket += ',';
+            }
+            else {
+                current_bucket += '}';
+            }
         }
-        file << temp_data;
+        file << current_bucket;
         file.close();
     };
     end = high_resolution_clock::now();
