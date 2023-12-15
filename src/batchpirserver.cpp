@@ -342,3 +342,7 @@ bool BatchPIRServer::check_decoded_entries(vector<std::vector<std::vector<unsign
 
     return true;
 }
+
+void BatchPIRServer::wipe_data() {
+    rawdb_.clear();
+}

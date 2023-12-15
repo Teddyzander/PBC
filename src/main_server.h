@@ -71,8 +71,9 @@ int batchpir_main_server(int argc, const char* argv[])
     database_times.push_back(duration_pbc);
 
     params.save_params();
-    
+    batch_server.wipe_data();
     auto hash_map = batch_server.get_hash_map();
+    delete& batch_server;
     size_t max_bucket_size = params.get_max_bucket_size();
     utils::save_bucket_size(max_bucket_size, tree_height, children);
     utils::save_map(hash_map, tree_height, children);
