@@ -96,7 +96,7 @@ int batchpir_main_client(int argc, const char* argv[])
             duration_querygen += chrono::duration_cast<chrono::milliseconds>(end - start);
             for (int v = 0; v < num_buckets; v++) {
                 file_output = file_output + "PBC" + to_string(v + 1) + "_" + to_string(tree_height) + "_" + to_string(children) + ".json; " +
-                    "NodeID: " + to_string(leaves[v]) + "; index: " + to_string(hashed_query[v] + 1) + "\n";
+                    "NodeID: " + to_string(leaves[v]) + "; index: " + to_string(hashed_query[v]) + "\n";
             }
         }
         catch (std::invalid_argument const&) {
