@@ -94,6 +94,7 @@ int batchpir_main_client(int argc, const char* argv[])
             auto leaves = batch_client.leaves;
             end = chrono::high_resolution_clock::now();
             duration_querygen += chrono::duration_cast<chrono::milliseconds>(end - start);
+            file_output = file_output + "TX_index: " + to_string(entry_indices[0] - lower + 1)) + "\n";
             for (int v = 0; v < num_buckets; v++) {
                 file_output = file_output + "PBC" + to_string(v + 1) + "_" + to_string(tree_height) + "_" + to_string(children) + ".json; " +
                     "NodeID: " + to_string(leaves[v]) + "; index: " + to_string(hashed_query[v]) + "\n";
