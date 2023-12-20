@@ -69,7 +69,7 @@ int batchpir_main_client(int argc, const char* argv[])
     int fails = 0;
     std::filesystem::create_directory("requests");
     std::ofstream myfile;
-    std::string file_name = "requests/indices_" + to_string(tree_height) + "_" + to_string(children) + ".txt";
+    std::string file_name = "requests/pbc_indices_" + to_string(tree_height) + "_" + to_string(children) + ".txt";
     myfile.open(file_name, std::ofstream::app);
     unsigned int num_buckets = ceil(DatabaseConstants::CuckooFactor * tree_height);
     auto hash_map = utils::load_map(tree_height, children);
