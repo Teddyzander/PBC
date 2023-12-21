@@ -173,7 +173,7 @@ void BatchPIRServer::simeple_hash()
         {
             buckets_[b].push_back(rawdb_[i]);
             map_[to_string(i+2) + to_string(b)] = buckets_[b].size() - 1;
-            // raw_map_[to_string(b) + to_string(buckets_[b].size() - 1)] = i;
+            raw_map_[to_string(b) + to_string(buckets_[b].size() - 1)] = i;
         }
     }
 
