@@ -119,7 +119,7 @@ void BatchPIRServer::populate_raw_db()
     database_size = sizeof(rawdb_) + (32 * rawdb_.size());
 }
 
-std::unordered_map<std::string, uint64_t> BatchPIRServer::get_hash_map() const
+std::unordered_map<std::string, uint32_t> BatchPIRServer::get_hash_map() const
 {
 
     if (!is_simple_hash_)
@@ -183,14 +183,14 @@ void BatchPIRServer::simeple_hash()
     balance_buckets();
 }
 
-std::vector<std::vector<uint64_t>> BatchPIRServer::simeple_hash_with_map()
+std::vector<std::vector<uint32_t>> BatchPIRServer::simeple_hash_with_map()
 {
     auto total_buckets = ceil(batchpir_params_->get_cuckoo_factor() * batchpir_params_->get_tree_height());
     auto db_entries = batchpir_params_->get_num_entries();
     auto num_candidates = batchpir_params_->get_num_hash_funcs();
     buckets_.resize(total_buckets);
 
-    std::vector<std::vector<uint64_t>> map(total_buckets);
+    std::vector<std::vector<uint32_t>> map(total_buckets);
     for (int i = 0; i < db_entries; i++)
     {
         std::vector<size_t> candidates = utils::get_candidate_buckets(i, num_candidates, total_buckets);
@@ -322,7 +322,7 @@ PIRResponseList BatchPIRServer::merge_responses(vector<PIRResponseList> &respons
     return server_list_[0].merge_responses_chunks_buckets(responses, client_id);
 }
 
-bool BatchPIRServer::check_decoded_entries(vector<std::vector<std::vector<unsigned char>>> entries_list, vector<uint64_t> cuckoo_table)
+bool BatchPIRServer::check_decoded_entries(vector<std::vector<std::vector<unsigned char>>> entries_list, vector<uint32_t> cuckoo_table)
 {
     size_t entry_size = batchpir_params_->get_entry_size();
     size_t dim_size = batchpir_params_->get_first_dimension_size();
@@ -335,7 +335,7 @@ bool BatchPIRServer::check_decoded_entries(vector<std::vector<std::vector<unsign
     for (int i = 0; i < server_list_.size(); i++)
     {
         const size_t offset = std::min(per_server_capacity, num_buckets - previous_idx);
-        vector<uint64_t> sub_buckets(cuckoo_table.begin() + previous_idx, cuckoo_table.begin() + previous_idx + offset);
+        vector<uint32_t> sub_buckets(cuckoo_table.begin() + previous_idx, cuckoo_table.begin() + previous_idx + offset);
         previous_idx += offset;
         server_list_[i].check_decoded_entries(entries_list[i], sub_buckets);
     }
