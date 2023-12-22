@@ -5,6 +5,7 @@
 #include "server.h"
 #include "src/utils.h"
 
+using uint64_t = uint32_t;
 
 class BatchPIRServer {
 
