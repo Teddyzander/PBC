@@ -5,8 +5,6 @@
 #include "server.h"
 #include "src/utils.h"
 
-using uint64_t = uint32_t;
-
 class BatchPIRServer {
 
 public:
@@ -17,7 +15,7 @@ public:
     void get_client_keys();
     vector<RawDB> get_buckets();
     PIRResponseList generate_response(uint32_t client_id, vector<PIRQuery> queries);
-    bool check_decoded_entries(vector<std::vector<std::vector<unsigned char>>> entries_list, vector<uint64_t> cuckoo_table);
+    bool check_decoded_entries(vector<std::vector<std::vector<unsigned char>>> entries_list, vector<uint32_t> cuckoo_table);
     chrono::milliseconds timer;
     unsigned long int database_size;
     unsigned int tree_height_;
