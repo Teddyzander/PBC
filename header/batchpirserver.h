@@ -11,7 +11,7 @@ class BatchPIRServer {
 public:
     
     BatchPIRServer(unsigned int tree_size, unsigned int children, BatchPirParams& batchpir_params);
-    std::unordered_map<std::string, uint64_t> get_hash_map() const;
+    std::unordered_map<std::string, uint32_t> get_hash_map() const;
     void set_client_keys(uint32_t client_id, std::pair<seal::GaloisKeys, seal::RelinKeys> keys);
     void get_client_keys();
     vector<RawDB> get_buckets();
@@ -33,12 +33,12 @@ private:
     vector<Server> server_list_;
     bool is_simple_hash_;
     bool is_client_keys_set_;
-    std::unordered_map<std::string, uint64_t> map_; // map from key to bucket index
-    std::unordered_map<std::string, uint64_t> raw_map_; // map from node to bucket index
+    std::unordered_map<std::string, uint32_t> map_; // map from key to bucket index
+    std::unordered_map<std::string, uint32_t> raw_map_; // map from node to bucket index
 
 
     void simeple_hash();
-    std::vector<std::vector<uint64_t>>  simeple_hash_with_map();
+    std::vector<std::vector<uint32_t>>  simeple_hash_with_map();
     void prepare_pir_server();
     void populate_raw_db();
     std::size_t get_max_bucket_size() const;
