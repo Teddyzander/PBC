@@ -166,7 +166,7 @@ void BatchPIRServer::simeple_hash()
     auto num_candidates = batchpir_params_->get_num_hash_funcs();
     buckets_.resize(total_buckets);
 
-    for (uint64_t i = 0; i < db_entries; i++)
+    for (uint32_t i = 0; i < db_entries; i++)
     {
         std::vector<size_t> candidates = utils::get_candidate_buckets(i+2, num_candidates, total_buckets);
         for (auto b : candidates)
