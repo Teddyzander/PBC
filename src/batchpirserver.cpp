@@ -116,7 +116,7 @@ void BatchPIRServer::populate_raw_db()
         myFile.close(); //close the file object.
     }
 
-    database_size = sizeof(rawdb_) + (32 * rawdb_.size());
+    database_size = sizeof(rawdb_) + (32 + 32 * rawdb_.size());
 }
 
 std::unordered_map<std::string, uint32_t> BatchPIRServer::get_hash_map() const
